@@ -15,7 +15,7 @@ public class PlayerBehaviour : MonoBehaviour
     float JumpingDuration = 1.0f;
     public float JumpingTimer;
     public float HorizontalMovementSpeed = 6.0f;
-    public float VerticalMovementSpeed = 1000.0f;
+    public float VerticalMovementSpeed = 3.0f;
     public GameObject MemoryStanding;
     public GameObject MemoryCrouch;
     GameObject[] Hazards;
