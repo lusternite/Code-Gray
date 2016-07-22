@@ -112,6 +112,15 @@ public class PlayerBehaviour : MonoBehaviour
         {
             EndLevelFlagCollision();
         }
+        if (Col.gameObject.tag == "Hazard")
+        {
+            GameObject gameManager = GameObject.Find("GameManager");
+            if (gameManager != null)
+            {
+                Debug.Log("Death by hazard");
+                gameManager.GetComponent<GameManager>().RestartLevel();
+            }
+        }
     }
 
     void HandleKeyInputs()
@@ -174,7 +183,7 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
                     LeftMovementFlag = false;
-                    Debug.Log("Yes");
+                    Debug.Log("Left arrowkey up");
                 }
 
             }
@@ -186,7 +195,7 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
                     RightMovementFlag = false;
-                    Debug.Log("Yes");
+                    Debug.Log("Right arrowkey up");
                 }
             }
 
