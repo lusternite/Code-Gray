@@ -21,40 +21,10 @@ public class PlayerBehaviour : MonoBehaviour
     GameObject[] Hazards;
     public Sprite[] CharacterSprites;
 
-    void OnLevelWasLoaded(int level)
-    {
-        Hazards = GameObject.FindGameObjectsWithTag("Hazard");
-    }
-
-    void HazardCollision()
-    {
-        if (Hazards.Length > 0)
-        {
-            foreach (GameObject hazard in Hazards)
-            {
-                if (/*Collision with hazard == */ true)
-                {
-                    GameObject Camera = GameObject.Find("GameManager");
-                    if (Camera != null)
-                    {
-                        //Camera.GetComponent<GameManager>.RestartLevel();
-                    }
-                }
-            }
-        }
-    }
-
-    void EndLevelFlagCollision()
-    {
-        if (/*Collision == */ true)
-        {
-            GameObject Camera = GameObject.Find("GameManager");
-            if (Camera != null)
-            {
-                //Camera.GetComponent<GameManager>.GoToNextLevel();
-            }
-        }
-    }
+    //void OnLevelWasLoaded(int level)
+    //{
+    //    Hazards = GameObject.FindGameObjectsWithTag("Hazard");
+    //}
 
     // Use this for initialization
     void Start()
@@ -70,7 +40,7 @@ public class PlayerBehaviour : MonoBehaviour
         HandleKeyInputs();
         //HandleJumping();
         transform.rotation = Quaternion.identity;
-        Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
+        //Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
         if (!LeftMovementFlag && !RightMovementFlag && !Jumping && GetComponent<Rigidbody2D>().velocity.y == 0.0f)
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
@@ -87,14 +57,31 @@ public class PlayerBehaviour : MonoBehaviour
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y);
         }
-        //HazardCollision();
-        //EndLevelFlagCollision();
     }
 
-    //void OnCollisionEnter2D(Collision2D Col)
-    //{
-    //    if ()
-    //}
+    void OnCollisionEnter2D(Collision2D Col)
+    {
+        Debug.Log("entered");
+        if (Col.gameObject.tag == "EndFlag")
+        {
+            
+            GameObject thing = GameObject.Find("GameManager");
+            if (thing != null)
+            {
+                thing.GetComponent<GameManager>().GoToNextLevel();
+            }
+        }
+        if (Col.gameObject.tag == "Hazard")
+        {
+            Debug.Log("died");
+            GameObject thing = GameObject.Find("GameManager");
+            if (thing != null)
+            {
+                
+                thing.GetComponent<GameManager>().RestartLevel();
+            }
+        }
+    }
 
     void OnTriggerStay2D(Collider2D Col)
     {
@@ -117,7 +104,7 @@ public class PlayerBehaviour : MonoBehaviour
         //Crouch down
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            Debug.Log("Crouched");
+            //Debug.Log("Crouched");
             Crouching = true;
             if (CanJump)
             {
@@ -130,7 +117,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.001f && Crouching)
         {
-            Debug.Log("This is happening");
+            //Debug.Log("This is happening");
             GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
             LeftMovementFlag = false;
             RightMovementFlag = false;
@@ -172,7 +159,7 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
                     LeftMovementFlag = false;
-                    Debug.Log("Yes");
+                    //Debug.Log("Yes");
                 }
 
             }
@@ -184,7 +171,7 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
                     RightMovementFlag = false;
-                    Debug.Log("Yes");
+                    //Debug.Log("Yes");
                 }
             }
 
