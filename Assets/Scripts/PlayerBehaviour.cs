@@ -6,7 +6,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     public bool LeftMovementFlag;
     public bool RightMovementFlag;
-    bool Jumping;
+    public bool JumpFlag;
     public bool CanJump;
     public bool Crouching;
     Vector2 HorizontalVelocity;
@@ -46,13 +46,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     void EndLevelFlagCollision()
     {
-        if (/*Collision == */ true)
+        GameObject gameManager = GameObject.Find("GameManager");
+        if (gameManager != null)
         {
-            GameObject Camera = GameObject.Find("GameManager");
-            if (Camera != null)
-            {
-                //Camera.GetComponent<GameManager>.GoToNextLevel();
-            }
+            gameManager.GetComponent<GameManager>().GoToNextLevel();
         }
     }
 
@@ -70,8 +67,20 @@ public class PlayerBehaviour : MonoBehaviour
         HandleKeyInputs();
         //HandleJumping();
         transform.rotation = Quaternion.identity;
-        Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
-        if (!LeftMovementFlag && !RightMovementFlag && !Jumping && GetComponent<Rigidbody2D>().velocity.y == 0.0f)
+        //Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
+
+        //HazardCollision();
+        //EndLevelFlagCollision();
+    }
+
+    void FixedUpdate()
+    {
+        if (JumpFlag)
+        {
+            GetComponent<Rigidbody2D>().velocity += VerticalVelocity;
+            JumpFlag = false;
+        }
+        if (!LeftMovementFlag && !RightMovementFlag && !JumpFlag && GetComponent<Rigidbody2D>().velocity.y == 0.0f)
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
         }
@@ -87,28 +96,18 @@ public class PlayerBehaviour : MonoBehaviour
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y);
         }
-        //HazardCollision();
-        //EndLevelFlagCollision();
     }
 
-    //void OnCollisionEnter2D(Collision2D Col)
-    //{
-    //    if ()
-    //}
-
-    void OnTriggerStay2D(Collider2D Col)
+    void OnCollisionEnter2D(Collision2D Col)
     {
-        if (Col.gameObject.tag == "Object")
-        {
-            CanJump = true;
-        }
+
     }
 
-    void OnTriggerExit2D(Collider2D Col)
+    void OnTriggerEnter2D(Collider2D Col)
     {
-        if (Col.gameObject.tag == "Object")
+        if (Col.gameObject.tag == "EndFlag")
         {
-            CanJump = false;
+            EndLevelFlagCollision();
         }
     }
 
@@ -191,12 +190,11 @@ public class PlayerBehaviour : MonoBehaviour
             //Jump
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.001f)
+                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.2f)
                 {
-                    //Jumping = true;
                     if (CanJump)
                     {
-                        GetComponent<Rigidbody2D>().velocity = VerticalVelocity;
+                        JumpFlag = true;
                     }
 
                 }
