@@ -32,10 +32,10 @@ public class GameManager : MonoBehaviour
     // Returns the UIManager script that is attached to the canvas
     UIManager GetCanvas()
     {
-        GameObject gameManager = GameObject.Find("Canvas");
-        if (gameManager != null)
+        GameObject UICanvas = GameObject.Find("Canvas");
+        if (UICanvas != null)
         {
-            return gameManager.GetComponent<UIManager>();
+            return UICanvas.GetComponent<UIManager>();
         }
         return null;
     }
