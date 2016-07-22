@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class PlayerBehaviour : MonoBehaviour
     public GameObject MemoryCrouch;
     GameObject[] Hazards;
     public Sprite[] CharacterSprites;
+    public List<GameObject> Clones;
+    public int MaxClones = 5;
 
     void OnLevelWasLoaded(int level)
     {
@@ -208,6 +211,13 @@ public class PlayerBehaviour : MonoBehaviour
              Instantiate(MemoryStanding,
              transform.position,
              Quaternion.identity) as GameObject;
+
+            Clones.Add(myRoadInstance);
+            if (Clones.Count > MaxClones)
+            {
+                GameObject.Destroy(Clones[0]);
+                Clones.RemoveAt(0);
+            }
 
             transform.position = StartPosition;
         }
