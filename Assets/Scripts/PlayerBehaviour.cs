@@ -43,6 +43,7 @@ public class PlayerBehaviour : MonoBehaviour
         GameObject gameManager = GameObject.Find("GameManager");
         if (gameManager != null)
         {
+            Debug.Log("Death by hazard");
             gameManager.GetComponent<GameManager>().RestartLevel();
         }
     }
@@ -102,16 +103,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         if (Col.gameObject.tag == "Hazard")
         {
-<<<<<<< HEAD
-            GameObject gameManager = GameObject.Find("GameManager");
-            if (gameManager != null)
-            {
-                Debug.Log("Death by hazard");
-                gameManager.GetComponent<GameManager>().RestartLevel();
-            }
-=======
             HazardCollision();
->>>>>>> origin/master
         }
     }
 
