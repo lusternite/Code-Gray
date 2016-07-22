@@ -27,25 +27,7 @@ public class PlayerBehaviour : MonoBehaviour
     void OnLevelWasLoaded(int level)
     {
         Hazards = GameObject.FindGameObjectsWithTag("Hazard");
-    }
-
-    void HazardCollision()
-    {
-        if (Hazards.Length > 0)
-        {
-            foreach (GameObject hazard in Hazards)
-            {
-                if (/*Collision with hazard == */ true)
-                {
-                    GameObject Camera = GameObject.Find("GameManager");
-                    if (Camera != null)
-                    {
-                        //Camera.GetComponent<GameManager>.RestartLevel();
-                    }
-                }
-            }
-        }
-    }
+    }   
 
     void EndLevelFlagCollision()
     {
@@ -53,6 +35,15 @@ public class PlayerBehaviour : MonoBehaviour
         if (gameManager != null)
         {
             gameManager.GetComponent<GameManager>().GoToNextLevel();
+        }
+    }
+
+    void HazardCollision()
+    {
+        GameObject gameManager = GameObject.Find("GameManager");
+        if (gameManager != null)
+        {
+            gameManager.GetComponent<GameManager>().RestartLevel();
         }
     }
 
@@ -71,9 +62,6 @@ public class PlayerBehaviour : MonoBehaviour
         //HandleJumping();
         transform.rotation = Quaternion.identity;
         //Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
-
-        //HazardCollision();
-        //EndLevelFlagCollision();
     }
 
     void FixedUpdate()
@@ -114,12 +102,16 @@ public class PlayerBehaviour : MonoBehaviour
         }
         if (Col.gameObject.tag == "Hazard")
         {
+<<<<<<< HEAD
             GameObject gameManager = GameObject.Find("GameManager");
             if (gameManager != null)
             {
                 Debug.Log("Death by hazard");
                 gameManager.GetComponent<GameManager>().RestartLevel();
             }
+=======
+            HazardCollision();
+>>>>>>> origin/master
         }
     }
 
