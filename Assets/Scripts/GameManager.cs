@@ -27,12 +27,23 @@ public class GameManager : MonoBehaviour
         //BackGroundMusic.clip = myAudioClip;
         //BackGroundMusic.loop = true;
         //BackGroundMusic.Play();
-
 	}
 
-    void Awake()
+    // Returns the UIManager script that is attached to the canvas
+    UIManager GetCanvas()
     {
-        DontDestroyOnLoad(this);
+        GameObject gameManager = GameObject.Find("Canvas");
+        if (gameManager != null)
+        {
+            return gameManager.GetComponent<UIManager>();
+        }
+        return null;
+    }
+
+    void OnLevelWasLoaded()
+    {
+        // Sets the text to the current level number
+        if (GetCanvas() != null) GetCanvas().SetLevelText("Level: " + Application.loadedLevel.ToString());
     }
 
     public void RestartLevel()
@@ -47,7 +58,8 @@ public class GameManager : MonoBehaviour
         {
             RestartLevel();
         }
-        //TimerText.text = Time.timeSinceLevelLoad.ToString();
+        // Sets the timer to the time since level was loaded - rounded to 2 d.p
+        if (GetCanvas() != null) GetCanvas().SetTimerText(Time.timeSinceLevelLoad.ToString("F2"));
 	}
 
     public void GoToNextLevel()
