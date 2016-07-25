@@ -28,7 +28,7 @@ public class ElectricPanel : MonoBehaviour
             else
             {
                 transform.gameObject.tag = "Untagged";
-                renderer.color = new Color(0f, 0f, 0f, 1);
+                renderer.color = new Color(0f, 0f, 0f, 0.2f);
             }
         }
         else
@@ -36,7 +36,7 @@ public class ElectricPanel : MonoBehaviour
             if (ButtonTrigger.ButtonPressed)
             {
                 transform.gameObject.tag = "Untagged";
-                renderer.color = new Color(0f, 0f, 0f, 1);
+                renderer.color = new Color(0f, 0f, 0f, 0.2f);
             }
             else
             {
