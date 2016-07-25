@@ -218,6 +218,13 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             transform.position = StartPosition;
+
+            //Reset all buttons
+            Button[] Buttons = FindObjectsOfType<Button>();
+            foreach (Button button in Buttons)
+            {
+                button.ButtonPressed = false;
+            }
         }
     }
 
