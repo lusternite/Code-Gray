@@ -23,12 +23,12 @@ public class ElectricPanel : MonoBehaviour
             if (ButtonTrigger.ButtonPressed)
             {
                 transform.gameObject.tag = "Hazard";
-                renderer.color = new Color(255f, 255f, 26f, 255f);
+                renderer.color = new Color(1, 1, 26 / 255, 1);
             }
             else
             {
                 transform.gameObject.tag = "Untagged";
-                renderer.color = new Color(0f, 0f, 0f, 255f);
+                renderer.color = new Color(0f, 0f, 0f, 1);
             }
         }
         else
@@ -36,12 +36,12 @@ public class ElectricPanel : MonoBehaviour
             if (ButtonTrigger.ButtonPressed)
             {
                 transform.gameObject.tag = "Untagged";
-                renderer.color = new Color(0f, 0f, 0f, 255f);
+                renderer.color = new Color(0f, 0f, 0f, 1);
             }
             else
             {
                 transform.gameObject.tag = "Hazard";
-                renderer.color = new Color(255f, 255f, 26f, 255f);
+                renderer.color = new Color(1, 1, 26 / 255, 1);
             }
         }
     }
