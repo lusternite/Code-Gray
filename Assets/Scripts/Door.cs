@@ -21,12 +21,14 @@ public class Door : MonoBehaviour {
             if (ButtonTrigger.ButtonPressed)
             {
                 GetComponent<BoxCollider2D>().enabled = true;
-                GetComponent<SpriteRenderer>().enabled = true;
+                //GetComponent<SpriteRenderer>().enabled = true;
+                GetComponent<SpriteRenderer>().sprite = DoorClosed;
             }
             else
             {
                 GetComponent<BoxCollider2D>().enabled = false;
-                GetComponent<SpriteRenderer>().enabled = false;
+                //GetComponent<SpriteRenderer>().enabled = false;
+                GetComponent<SpriteRenderer>().sprite = DoorOpen;
             }
         }
         else
@@ -34,12 +36,14 @@ public class Door : MonoBehaviour {
             if (ButtonTrigger.ButtonPressed)
             {
                 GetComponent<BoxCollider2D>().enabled = false;
-                GetComponent<SpriteRenderer>().enabled = false;
+                //GetComponent<SpriteRenderer>().enabled = false;
+                GetComponent<SpriteRenderer>().sprite = DoorOpen;
             }
             else
             {
                 GetComponent<BoxCollider2D>().enabled = true;
-                GetComponent<SpriteRenderer>().enabled = true;
+                //GetComponent<SpriteRenderer>().enabled = true;
+                GetComponent<SpriteRenderer>().sprite = DoorClosed;
             }
         }
 	}

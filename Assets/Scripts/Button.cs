@@ -19,13 +19,19 @@ public class Button : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        if (ButtonPressed == true)
+        {
+            GetComponent<SpriteRenderer>().sprite = ButtonOn;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().sprite = ButtonOff;
+        }
 	}
 
     void OnTriggerStay2D()
     {
         ButtonPressed = true;
-        
     }
 
     void OnTriggerEnter2D()
@@ -37,6 +43,5 @@ public class Button : MonoBehaviour {
     {
         ButtonReleaseSound.Play();
         ButtonPressed = false;
-
     }
 }
