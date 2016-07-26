@@ -12,6 +12,7 @@ public class PlayerBehaviour : MonoBehaviour
     bool move = true;
     public bool CanJump;
     public bool Crouching;
+    public bool IsActive = true;
     Vector2 HorizontalVelocity;
     Vector2 VerticalVelocity;
     Vector3 StartPosition;
@@ -79,45 +80,53 @@ public class PlayerBehaviour : MonoBehaviour
         HorizontalVelocity = new Vector2(HorizontalMovementSpeed, 0.0f);
         VerticalVelocity = new Vector2(0.0f, VerticalMovementSpeed);
         StartPosition = transform.position;
+        IsActive = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (move) HandleKeyInputs();
-        //HandleJumping();
-        transform.rotation = Quaternion.identity;
-        //Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
-        GameObject UICanvas = GameObject.Find("Canvas");
-        if (UICanvas != null)
+        if (IsActive)
         {
-            if (timer) UICanvas.GetComponent<UIManager>().SetTimerText(Time.timeSinceLevelLoad.ToString("F2"));
+            if (move) HandleKeyInputs();
+            //HandleJumping();
+            transform.rotation = Quaternion.identity;
+            //Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
+            GameObject UICanvas = GameObject.Find("Canvas");
+            if (UICanvas != null)
+            {
+                if (timer) UICanvas.GetComponent<UIManager>().SetTimerText(Time.timeSinceLevelLoad.ToString("F2"));
+            }
         }
+        
         
     }
 
     void FixedUpdate()
     {
-        if (JumpFlag)
+        if (IsActive)
         {
-            GetComponent<Rigidbody2D>().velocity += VerticalVelocity;
-            JumpFlag = false;
-        }
-        if (!LeftMovementFlag && !RightMovementFlag && !JumpFlag && GetComponent<Rigidbody2D>().velocity.y == 0.0f)
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
-        }
-        if (LeftMovementFlag)
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(-HorizontalMovementSpeed, GetComponent<Rigidbody2D>().velocity.y);
-        }
-        else if (RightMovementFlag)
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(HorizontalMovementSpeed, GetComponent<Rigidbody2D>().velocity.y);
-        }
-        else
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y);
+            if (JumpFlag)
+            {
+                GetComponent<Rigidbody2D>().velocity += VerticalVelocity;
+                JumpFlag = false;
+            }
+            if (!LeftMovementFlag && !RightMovementFlag && !JumpFlag && GetComponent<Rigidbody2D>().velocity.y == 0.0f)
+            {
+                GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+            }
+            if (LeftMovementFlag)
+            {
+                GetComponent<Rigidbody2D>().velocity = new Vector2(-HorizontalMovementSpeed, GetComponent<Rigidbody2D>().velocity.y);
+            }
+            else if (RightMovementFlag)
+            {
+                GetComponent<Rigidbody2D>().velocity = new Vector2(HorizontalMovementSpeed, GetComponent<Rigidbody2D>().velocity.y);
+            }
+            else
+            {
+                GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y);
+            }
         }
     }
 
@@ -134,6 +143,10 @@ public class PlayerBehaviour : MonoBehaviour
         }
         if (Col.gameObject.tag == "Hazard")
         {
+            IsActive = false;
+            GetComponent<Rigidbody2D>().velocity *= 0.0f;
+            GetComponent<Rigidbody2D>().gravityScale = 0.0f;
+            GetComponent<SpriteRenderer>().enabled = false;
             StartCoroutine(HazardCollision());
         }
     }
