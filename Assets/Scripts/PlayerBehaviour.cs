@@ -8,6 +8,7 @@ public class PlayerBehaviour : MonoBehaviour
     public bool LeftMovementFlag;
     public bool RightMovementFlag;
     public bool JumpFlag;
+    public bool FacingRight = true;
     bool timer = true;
     bool move = true;
     public bool CanJump;
@@ -26,6 +27,7 @@ public class PlayerBehaviour : MonoBehaviour
     public Sprite[] CharacterSprites;
     public List<GameObject> Clones;
     public int MaxClones = 5;
+    public Quaternion PlayerRotation;
 
     public AudioSource JumpSound;
     public AudioSource CloneSound;
@@ -81,6 +83,7 @@ public class PlayerBehaviour : MonoBehaviour
         VerticalVelocity = new Vector2(0.0f, VerticalMovementSpeed);
         StartPosition = transform.position;
         IsActive = true;
+        PlayerRotation = transform.rotation;
     }
 
     // Update is called once per frame
@@ -90,7 +93,14 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (move) HandleKeyInputs();
             //HandleJumping();
-            transform.rotation = Quaternion.identity;
+            if (FacingRight)
+            {
+                transform.rotation = Quaternion.identity;
+            }
+            else
+            {
+                transform.rotation = new Quaternion(0.0f, 1.0f, 0.0f, 0.0f);
+            }
             //Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
             GameObject UICanvas = GameObject.Find("Canvas");
             if (UICanvas != null)
@@ -113,15 +123,28 @@ public class PlayerBehaviour : MonoBehaviour
             }
             if (!LeftMovementFlag && !RightMovementFlag && !JumpFlag && GetComponent<Rigidbody2D>().velocity.y == 0.0f)
             {
+                //GetComponent<Animator>().StopPlayback();
+                //GetComponent<Animator>().Play("PlayerStandingAnim");
                 GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
             }
-            if (LeftMovementFlag)
+            else if (LeftMovementFlag)
             {
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-HorizontalMovementSpeed, GetComponent<Rigidbody2D>().velocity.y);
+                //transform.rotation.Set(0.0f, 1.0f, 0.0f, 1.0f);
+                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.02f)
+                {
+                    //GetComponent<Animator>().Play();
+                    GetComponent<Animator>().Play("PlayerRunningAnim");
+                }
             }
             else if (RightMovementFlag)
             {
                 GetComponent<Rigidbody2D>().velocity = new Vector2(HorizontalMovementSpeed, GetComponent<Rigidbody2D>().velocity.y);
+                //transform.rotation.Set(0.0f, 0.0f, 0.0f, 1.0f);
+                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.02f)
+                {
+                    GetComponent<Animator>().Play("PlayerRunningAnim");
+                }
             }
             else
             {
@@ -132,7 +155,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D Col)
     {
-
+        GetComponent<Animator>().Play("PlayerStandingAnim");
     }
 
     void OnTriggerEnter2D(Collider2D Col)
@@ -147,6 +170,8 @@ public class PlayerBehaviour : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity *= 0.0f;
             GetComponent<Rigidbody2D>().gravityScale = 0.0f;
             GetComponent<SpriteRenderer>().enabled = false;
+            LeftMovementFlag = false;
+            RightMovementFlag = false;
             StartCoroutine(HazardCollision());
         }
     }
@@ -191,6 +216,8 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     //GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
                     LeftMovementFlag = true;
+                    FacingRight = false;
+                    //transform.rotation.Set(0.0f, 1.0f, 0.0f, 0.0f);
                 }
             }
 
@@ -200,6 +227,8 @@ public class PlayerBehaviour : MonoBehaviour
                 if (!RightMovementFlag)
                 {
                     GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
+                    //transform.rotation.Set(0.0f, 0.0f, 0.0f, 0.0f);
+                    FacingRight = true;
                     RightMovementFlag = true;
                 }
             }
@@ -210,6 +239,7 @@ public class PlayerBehaviour : MonoBehaviour
                 if (LeftMovementFlag)
                 {
                     GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
+                    GetComponent<Animator>().Play("PlayerStandingAnim");
                     LeftMovementFlag = false;
                     Debug.Log("Left arrowkey up");
                 }
@@ -222,6 +252,7 @@ public class PlayerBehaviour : MonoBehaviour
                 if (RightMovementFlag)
                 {
                     GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
+                    GetComponent<Animator>().Play("PlayerStandingAnim");
                     RightMovementFlag = false;
                     Debug.Log("Right arrowkey up");
                 }
@@ -235,6 +266,7 @@ public class PlayerBehaviour : MonoBehaviour
                     if (CanJump)
                     {
                         JumpFlag = true;
+                        GetComponent<Animator>().Play("PlayerJumpAnim");
                         JumpSound.Play();
                     }
 
