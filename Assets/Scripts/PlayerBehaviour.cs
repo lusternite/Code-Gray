@@ -204,6 +204,7 @@ public class PlayerBehaviour : MonoBehaviour
                     if (CanJump)
                     {
                         JumpFlag = true;
+                        JumpSound.Play();
                     }
 
                 }
