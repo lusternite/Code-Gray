@@ -4,13 +4,13 @@ using System.Collections;
 public class Button : MonoBehaviour {
 
     public bool ButtonPressed;
-<<<<<<< HEAD
+
     public Sprite ButtonOn;
     public Sprite ButtonOff;
-=======
+
     public AudioSource ButtonPressedSound;
     public AudioSource ButtonReleaseSound;
->>>>>>> origin/master
+
 
 	// Use this for initialization
 	void Start () {
