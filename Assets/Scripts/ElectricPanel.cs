@@ -23,12 +23,20 @@ public class ElectricPanel : MonoBehaviour
             if (ButtonTrigger.ButtonPressed)
             {
                 transform.gameObject.tag = "Hazard";
-                renderer.color = new Color(1, 1, 26 / 255, 1);
+                //renderer.color = new Color(1, 1, 26 / 255, 1);
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim");
+                }
             }
             else
             {
                 transform.gameObject.tag = "Untagged";
-                renderer.color = new Color(0f, 0f, 0f, 0.2f);
+                //renderer.color = new Color(0f, 0f, 0f, 0.2f);
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim_Off");
+                }
             }
         }
         else
@@ -36,12 +44,20 @@ public class ElectricPanel : MonoBehaviour
             if (ButtonTrigger.ButtonPressed)
             {
                 transform.gameObject.tag = "Untagged";
-                renderer.color = new Color(0f, 0f, 0f, 0.2f);
+                //renderer.color = new Color(0f, 0f, 0f, 0.2f);
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim_Off");
+                }
             }
             else
             {
                 transform.gameObject.tag = "Hazard";
-                renderer.color = new Color(1, 1, 26 / 255, 1);
+                //renderer.color = new Color(1, 1, 26 / 255, 1);
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim");
+                }
             }
         }
     }
