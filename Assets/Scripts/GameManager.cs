@@ -25,10 +25,15 @@ public class GameManager : MonoBehaviour
             print("Destroyed duplicate");
         }
 
-        DontDestroyOnLoad(this.gameObject);
-
         BackGroundMusic.loop = true;
         BackGroundMusic.Play();
+
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
     }
 
     // Returns the UIManager script that is attached to the canvas
