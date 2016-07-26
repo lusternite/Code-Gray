@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.IO;
+using System.Text;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
-    //public AudioSource BackGroundMusic;
-    //public Text TimerText;
+    string[] LevelBestTimes;
 
-	// Use this for initialization
 	void Start()
     {
+        LevelBestTimes = new string[8];
+        ReadFromFile();
         if (!instance)
         {
             instance = this;
@@ -21,12 +23,7 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
             print("Destroyed duplicate");
         }
-        DontDestroyOnLoad(this.gameObject);  
-        //AudioClip myAudioClip;
-        //myAudioClip = (AudioClip)Resources.Load("");
-        //BackGroundMusic.clip = myAudioClip;
-        //BackGroundMusic.loop = true;
-        //BackGroundMusic.Play();
+        DontDestroyOnLoad(this.gameObject);
 	}
 
     // Returns the UIManager script that is attached to the canvas
@@ -43,7 +40,18 @@ public class GameManager : MonoBehaviour
     void OnLevelWasLoaded()
     {
         // Sets the text to the current level number
-        if (GetCanvas() != null) GetCanvas().SetLevelText("Level: " + Application.loadedLevel.ToString());
+        if (GetCanvas() != null)
+        {
+            GetCanvas().SetLevelText("Level: " + Application.loadedLevel.ToString());
+            if (LevelBestTimes[Application.loadedLevel - 1] == "0.0")
+            {
+                GetCanvas().SetBestTimeText("Best: --.--");
+            }
+            else
+            {
+                GetCanvas().SetBestTimeText("Best: " + float.Parse(LevelBestTimes[Application.loadedLevel - 1]).ToString("F2"));
+            }
+        }
     }
 
     public void RestartLevel()
@@ -86,5 +94,47 @@ public class GameManager : MonoBehaviour
     public void ExitApplication()
     {
         Application.Quit();
+    }
+
+    public void UpdateTimes()
+    {
+        float prevBest = float.Parse(LevelBestTimes[Application.loadedLevel - 1]);
+        if (Time.timeSinceLevelLoad < prevBest || prevBest == 0.0)
+        {
+            LevelBestTimes[Application.loadedLevel - 1] = Time.timeSinceLevelLoad.ToString();
+        }
+        WriteToFile();
+    }
+
+    void WriteToFile()
+    {
+        var sr = File.CreateText(Application.dataPath + "\\TextFiles\\BestTimes.txt");
+        for (int i = 0; i < Application.levelCount - 1; ++i)
+        {
+            sr.WriteLine(LevelBestTimes[i]);
+        }
+        sr.Close();
+    }
+
+    void ReadFromFile()
+    {
+        string line;
+        StreamReader theReader = new StreamReader(Application.dataPath + "\\TextFiles\\BestTimes.txt");
+        using (theReader)
+        {
+            int i = 0;
+            do
+            {
+                line = theReader.ReadLine();
+                if (line != null)
+                {
+                    LevelBestTimes[i] = line;
+                }
+                i++;
+            }
+            while (line != null);
+
+            theReader.Close();
+        }
     }
 }

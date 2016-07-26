@@ -32,7 +32,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             UICanvas.GetComponent<UIManager>().SetMemoriesText("Memories: " + MaxClones.ToString());
         }
-    }   
+    }
 
     void EndLevelFlagCollision()
     {
@@ -40,6 +40,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (gameManager != null)
         {
             gameManager.GetComponent<GameManager>().GoToNextLevel();
+            gameManager.GetComponent<GameManager>().UpdateTimes();
         }
     }
 
@@ -115,38 +116,38 @@ public class PlayerBehaviour : MonoBehaviour
     void HandleKeyInputs()
     {
         //Crouch down
-        //if (Input.GetKeyDown(KeyCode.DownArrow))
-        //{
-        //    Debug.Log("Crouched");
-        //    Crouching = true;
-        //    if (CanJump)
-        //    {
-        //        GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, GetComponent<Rigidbody2D>().velocity.y);
-        //        LeftMovementFlag = false;
-        //        RightMovementFlag = false;
-        //    }
-        //    GetComponent<SpriteRenderer>().sprite = CharacterSprites[1];
-        //}
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Debug.Log("Crouched");
+            Crouching = true;
+            if (CanJump)
+            {
+                GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, GetComponent<Rigidbody2D>().velocity.y);
+                LeftMovementFlag = false;
+                RightMovementFlag = false;
+            }
+            GetComponent<SpriteRenderer>().sprite = CharacterSprites[1];
+        }
 
-        //if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.001f && Crouching)
-        //{
-        //    Debug.Log("This is happening");
-        //    GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
-        //    LeftMovementFlag = false;
-        //    RightMovementFlag = false;
-        //}
+        if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.001f && Crouching)
+        {
+            Debug.Log("This is happening");
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+            LeftMovementFlag = false;
+            RightMovementFlag = false;
+        }
 
-        ////Crouch up
-        //if (Input.GetKeyUp(KeyCode.DownArrow))
-        //{
-        //    Crouching = false;
-        //    GetComponent<SpriteRenderer>().sprite = CharacterSprites[0];
-        //}
+        //Crouch up
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            Crouching = false;
+            GetComponent<SpriteRenderer>().sprite = CharacterSprites[0];
+        }
 
         if (!Crouching)
         {
             //Left movement down
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 if (!LeftMovementFlag)
                 {
@@ -156,7 +157,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             //Right movement down
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 if (!RightMovementFlag)
                 {
@@ -166,7 +167,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             //Left movement up
-            if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
+            if (Input.GetKeyUp(KeyCode.LeftArrow))
             {
                 if (LeftMovementFlag)
                 {
@@ -178,7 +179,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             //Right movement up
-            if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
+            if (Input.GetKeyUp(KeyCode.RightArrow))
             {
                 if (RightMovementFlag)
                 {
@@ -189,7 +190,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             //Jump
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.2f)
                 {

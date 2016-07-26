@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour {
     public Text timer;
     public Text level;
     public Text memories;
+    public Text besttime;
 
     void Start()
     {
@@ -43,5 +44,10 @@ public class UIManager : MonoBehaviour {
     public void SetMemoriesText(string text)
     {
         memories.text = text;
+    }
+
+    public void SetBestTimeText(string text)
+    {
+        besttime.text = text;
     }
 }
