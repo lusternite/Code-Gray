@@ -24,6 +24,11 @@ public class PlayerBehaviour : MonoBehaviour
     public List<GameObject> Clones;
     public int MaxClones = 5;
 
+    public AudioSource JumpSound;
+    public AudioSource CloneSound;
+    public AudioSource EndOfLevelSound;
+    public AudioSource DieSound;
+
     void OnLevelWasLoaded(int level)
     {
         Hazards = GameObject.FindGameObjectsWithTag("Hazard");
@@ -36,6 +41,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     void EndLevelFlagCollision()
     {
+        EndOfLevelSound.Play();
         GameObject gameManager = GameObject.Find("GameManager");
         if (gameManager != null)
         {
@@ -46,6 +52,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     void HazardCollision()
     {
+        DieSound.Play();
         GameObject gameManager = GameObject.Find("GameManager");
         if (gameManager != null)
         {
@@ -197,6 +204,7 @@ public class PlayerBehaviour : MonoBehaviour
                     if (CanJump)
                     {
                         JumpFlag = true;
+                        JumpSound.Play();
                     }
 
                 }
@@ -219,6 +227,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             transform.position = StartPosition;
+            CloneSound.Play();
 
             //Reset all buttons
             Button[] Buttons = FindObjectsOfType<Button>();
