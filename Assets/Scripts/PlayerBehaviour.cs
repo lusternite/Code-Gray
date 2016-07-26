@@ -9,7 +9,7 @@ public class PlayerBehaviour : MonoBehaviour
     public bool RightMovementFlag;
     public bool JumpFlag;
     bool timer = true;
-
+    bool move = true;
     public bool CanJump;
     public bool Crouching;
     Vector2 HorizontalVelocity;
@@ -47,6 +47,10 @@ public class PlayerBehaviour : MonoBehaviour
         EndOfLevelSound.Play();
         GameObject gameManager = GameObject.Find("GameManager");
         timer = false;
+        move = false;
+        LeftMovementFlag = false;
+        RightMovementFlag = false;
+        JumpFlag = false;
         float time = Time.timeSinceLevelLoad;
         gameManager.GetComponent<GameManager>().UpdateTimes(time);
         yield return new WaitForSeconds(1);
@@ -80,7 +84,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleKeyInputs();
+        if (move) HandleKeyInputs();
         //HandleJumping();
         transform.rotation = Quaternion.identity;
         //Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
@@ -226,7 +230,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         //Freeze Mechanic
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && move)
         {
             GameObject myRoadInstance =
              Instantiate(MemoryStanding,
