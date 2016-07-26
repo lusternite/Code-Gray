@@ -4,6 +4,8 @@ using System.Collections;
 public class Door : MonoBehaviour {
 
     public GameObject ButtonTriggerObject;
+    public Sprite DoorClosed;
+    public Sprite DoorOpen;
     Button ButtonTrigger;
     public bool Inverted;
 
