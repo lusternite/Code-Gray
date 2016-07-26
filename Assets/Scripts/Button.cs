@@ -8,8 +8,8 @@ public class Button : MonoBehaviour {
     public Sprite ButtonOn;
     public Sprite ButtonOff;
 
-    public AudioSource ButtonPressedSound;
-    public AudioSource ButtonReleaseSound;
+    public AudioClip ButtonPressedSound;
+    public AudioClip ButtonReleaseSound;
 
 
 	// Use this for initialization
@@ -36,12 +36,12 @@ public class Button : MonoBehaviour {
 
     void OnTriggerEnter2D()
     {
-       ButtonPressedSound.Play();
+        AudioSource.PlayClipAtPoint(ButtonPressedSound, transform.position);
     }
 
     void OnTriggerExit2D()
     {
-        ButtonReleaseSound.Play();
+        AudioSource.PlayClipAtPoint(ButtonReleaseSound, transform.position);
         ButtonPressed = false;
     }
 }

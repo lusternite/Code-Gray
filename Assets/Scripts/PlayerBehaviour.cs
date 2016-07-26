@@ -14,7 +14,7 @@ public class PlayerBehaviour : MonoBehaviour
     public bool Crouching;
     Vector2 HorizontalVelocity;
     Vector2 VerticalVelocity;
-    Vector2 StartPosition;
+    Vector3 StartPosition;
     float JumpingDuration = 1.0f;
     public float JumpingTimer;
     public float HorizontalMovementSpeed = 65.0f;
@@ -30,6 +30,7 @@ public class PlayerBehaviour : MonoBehaviour
     public AudioSource CloneSound;
     public AudioSource EndOfLevelSound;
     public AudioSource DieSound;
+    public AudioClip HazardDeathSound;
 
     void OnLevelWasLoaded(int level)
     {
@@ -52,13 +53,18 @@ public class PlayerBehaviour : MonoBehaviour
         gameManager.GetComponent<GameManager>().GoToNextLevel();
     }
 
-    void HazardCollision()
+    IEnumerator HazardCollision()
     {
         DieSound.Play();
         GameObject gameManager = GameObject.Find("GameManager");
         if (gameManager != null)
         {
             Debug.Log("Death by hazard");
+            AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
+            timer = false;
+            float time = Time.timeSinceLevelLoad;
+            gameManager.GetComponent<GameManager>().UpdateTimes(time);
+            yield return new WaitForSeconds(1);
             gameManager.GetComponent<GameManager>().RestartLevel();
         }
     }
@@ -124,7 +130,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         if (Col.gameObject.tag == "Hazard")
         {
-            HazardCollision();
+            StartCoroutine(HazardCollision());
         }
     }
 
