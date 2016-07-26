@@ -4,6 +4,8 @@ using System.Collections;
 public class Button : MonoBehaviour {
 
     public bool ButtonPressed;
+    public AudioSource ButtonPressedSound;
+    public AudioSource ButtonReleaseSound;
 
 	// Use this for initialization
 	void Start () {
@@ -21,8 +23,15 @@ public class Button : MonoBehaviour {
         
     }
 
+    void OnTriggerEnter2D()
+    {
+       ButtonPressedSound.Play();
+    }
+
     void OnTriggerExit2D()
     {
+        ButtonReleaseSound.Play();
         ButtonPressed = false;
+
     }
 }

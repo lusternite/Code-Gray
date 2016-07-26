@@ -31,11 +31,6 @@ public class ElectricPanel : MonoBehaviour
                 {
                     transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim");
                 }
-                if (!ElectricBuzzSound.isPlaying)
-                {
-                    ElectricBuzzSound.loop = true;
-                    ElectricBuzzSound.Play();
-                }
             }
             else
             {
@@ -44,10 +39,6 @@ public class ElectricPanel : MonoBehaviour
                 for (int i = 0; i < transform.childCount; i++)
                 {
                     transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim_Off");
-                }
-                if (ElectricBuzzSound.isPlaying)
-                {
-                    ElectricBuzzSound.Stop();
                 }
             }
         }
@@ -61,10 +52,6 @@ public class ElectricPanel : MonoBehaviour
                 {
                     transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim_Off");
                 }
-                if (ElectricBuzzSound.isPlaying)
-                {
-                    ElectricBuzzSound.Stop();
-                }
             }
             else
             {
@@ -73,11 +60,6 @@ public class ElectricPanel : MonoBehaviour
                 for (int i = 0; i < transform.childCount; i++)
                 {
                     transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim");
-                }
-                if (!ElectricBuzzSound.isPlaying)
-                {
-                    ElectricBuzzSound.loop = true;
-                    ElectricBuzzSound.Play();
                 }
             }
         }
