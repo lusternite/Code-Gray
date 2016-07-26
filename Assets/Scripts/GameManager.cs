@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     string[] LevelBestTimes;
+    public AudioSource BackGroundMusic;
 
-	void Start()
+    void Start()
     {
         LevelBestTimes = new string[8];
         ReadFromFile();
@@ -23,8 +24,12 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
             print("Destroyed duplicate");
         }
+
         DontDestroyOnLoad(this.gameObject);
-	}
+
+        BackGroundMusic.loop = true;
+        BackGroundMusic.Play();
+    }
 
     // Returns the UIManager script that is attached to the canvas
     UIManager GetCanvas()
