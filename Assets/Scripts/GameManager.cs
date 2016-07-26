@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
             RestartLevel();
         }
         // Sets the timer to the time since level was loaded - rounded to 2 d.p
-        if (GetCanvas() != null) GetCanvas().SetTimerText(Time.timeSinceLevelLoad.ToString("F2"));
+        
 	}
 
     public void GoToNextLevel()
@@ -106,12 +106,12 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void UpdateTimes()
+    public void UpdateTimes(float time)
     {
         float prevBest = float.Parse(LevelBestTimes[Application.loadedLevel - 1]);
-        if (Time.timeSinceLevelLoad < prevBest || prevBest == 0.0)
+        if (time < prevBest || prevBest == 0.0)
         {
-            LevelBestTimes[Application.loadedLevel - 1] = Time.timeSinceLevelLoad.ToString();
+            LevelBestTimes[Application.loadedLevel - 1] = time.ToString("F2");
         }
         WriteToFile();
     }

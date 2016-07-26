@@ -8,6 +8,8 @@ public class PlayerBehaviour : MonoBehaviour
     public bool LeftMovementFlag;
     public bool RightMovementFlag;
     public bool JumpFlag;
+    bool timer = true;
+
     public bool CanJump;
     public bool Crouching;
     Vector2 HorizontalVelocity;
@@ -39,15 +41,15 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    void EndLevelFlagCollision()
+    IEnumerator EndLevelFlagCollision()
     {
         EndOfLevelSound.Play();
         GameObject gameManager = GameObject.Find("GameManager");
-        if (gameManager != null)
-        {
-            gameManager.GetComponent<GameManager>().GoToNextLevel();
-            gameManager.GetComponent<GameManager>().UpdateTimes();
-        }
+        timer = false;
+        float time = Time.timeSinceLevelLoad;
+        gameManager.GetComponent<GameManager>().UpdateTimes(time);
+        yield return new WaitForSeconds(1);
+        gameManager.GetComponent<GameManager>().GoToNextLevel();
     }
 
     void HazardCollision()
@@ -76,6 +78,12 @@ public class PlayerBehaviour : MonoBehaviour
         //HandleJumping();
         transform.rotation = Quaternion.identity;
         //Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
+        GameObject UICanvas = GameObject.Find("Canvas");
+        if (UICanvas != null)
+        {
+            if (timer) UICanvas.GetComponent<UIManager>().SetTimerText(Time.timeSinceLevelLoad.ToString("F2"));
+        }
+        
     }
 
     void FixedUpdate()
@@ -112,7 +120,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (Col.gameObject.tag == "EndFlag")
         {
-            EndLevelFlagCollision();
+            StartCoroutine(EndLevelFlagCollision());
         }
         if (Col.gameObject.tag == "Hazard")
         {
