@@ -76,6 +76,14 @@ public class GameManager : MonoBehaviour
         {
             RestartLevel();
         }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            GoToNextLevel();
+        }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            Application.LoadLevel("MenuScene");
+        }
         // Sets the timer to the time since level was loaded - rounded to 2 d.p
         
 	}
@@ -84,8 +92,8 @@ public class GameManager : MonoBehaviour
     {
         if (Application.loadedLevel < Application.levelCount - 1)
         {
-            Debug.Log(Application.loadedLevel);
-            Debug.Log(Application.levelCount);
+            //Debug.Log(Application.loadedLevel);
+            //Debug.Log(Application.levelCount);
             Application.LoadLevel(Application.loadedLevel + 1);
         }
         else 
