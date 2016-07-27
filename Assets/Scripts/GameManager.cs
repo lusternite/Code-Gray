@@ -76,11 +76,11 @@ public class GameManager : MonoBehaviour
         {
             RestartLevel();
         }
-        else if (Input.GetKeyDown(KeyCode.P))
+        else if (Input.GetKeyDown(KeyCode.N))
         {
             GoToNextLevel();
         }
-        else if (Input.GetKeyDown(KeyCode.L))
+        else if (Input.GetKeyDown(KeyCode.M))
         {
             Application.LoadLevel("MenuScene");
         }

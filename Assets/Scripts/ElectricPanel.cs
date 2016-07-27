@@ -9,14 +9,14 @@ public class ElectricPanel : MonoBehaviour
     public SpriteRenderer renderer;
     public bool Inverted;
     public bool IsVert;
-    public AudioSource ElectricBuzzSound;
+   // public AudioSource ElectricBuzzSound;
 
     // Use this for initialization
     void Start()
     {
         ButtonTrigger = ButtonTriggerObject.GetComponent<Button>();
-        ElectricBuzzSound.loop = true;
-        ElectricBuzzSound.Play();
+        //ElectricBuzzSound.loop = true;
+       // ElectricBuzzSound.Play();
     }
 
     // Update is called once per frame
