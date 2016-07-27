@@ -4,21 +4,20 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour {
 
-    public bool _MenuState;
-    Vector3 StartPosition;
+    public bool _MenuState = true;
 
-    void Start()
-    {
-        _MenuState = true;
-        StartPosition = transform.position;
-        Debug.Log("same");
-    }
+    public Sprite begin;
+    public Sprite begin_off;
+    public Sprite exit;
+    public Sprite exit_off;
+
+    public Image begin_button;
+    public Image exit_button;
 
     // Update is called once per frame
     void Update()
     {
         GetInput();
-        SetInput();
     }
 
     void GetInput()
@@ -27,11 +26,15 @@ public class MenuManager : MonoBehaviour {
         {
             if (_MenuState == true) 
             {
+                begin_button.sprite = begin_off;
+                exit_button.sprite = exit;
                 _MenuState = false;
                 Debug.Log("false");
             }
             else
             {
+                begin_button.GetComponent<Image>().sprite = begin;
+                exit_button.GetComponent<Image>().sprite = exit_off;
                 _MenuState = true;
                 Debug.Log("true");
             }
@@ -47,17 +50,6 @@ public class MenuManager : MonoBehaviour {
             {
                 ExitGame();
             }
-        }
-    }
-
-    void SetInput()
-    {
-        if (_MenuState == true)
-        {
-            transform.position = new Vector3(459, 282, 0);
-        }
-        else{
-            transform.position = new Vector3(460, 224, 0);
         }
     }
 
