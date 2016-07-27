@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-
     public bool LeftMovementFlag;
     public bool RightMovementFlag;
     public bool JumpFlag;
@@ -18,6 +17,8 @@ public class PlayerBehaviour : MonoBehaviour
     Vector2 VerticalVelocity;
     Vector3 StartPosition;
     float JumpingDuration = 1.0f;
+    float NextLevelTimer = 0.0f;
+    float ResetLevelTimer = 0.0f;
     public float JumpingTimer;
     public float HorizontalMovementSpeed = 65.0f;
     public float VerticalMovementSpeed = 69.0f;
@@ -111,7 +112,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
-
+        LevelTransitions();
     }
 
     void FixedUpdate()
@@ -152,7 +153,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
             else
             {
-                if (!(Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) > 0.02f) )
+                if (!(Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) > 0.02f))
                 {
                     GetComponent<Animator>().Play("PlayerStandingAnim");
                 }
@@ -172,7 +173,13 @@ public class PlayerBehaviour : MonoBehaviour
         {
             //StartCoroutine(EndLevelFlagCollision());
             GameObject gameManager = GameObject.Find("GameManager");
-            gameManager.GetComponent<GameManager>().GoToNextLevel();
+            EndOfLevelSound.Play();
+            timer = false;
+            move = false;
+            LeftMovementFlag = false;
+            RightMovementFlag = false;
+            JumpFlag = false;
+            NextLevelTimer = 1.0f;
         }
         if (Col.gameObject.tag == "Hazard")
         {
@@ -184,7 +191,7 @@ public class PlayerBehaviour : MonoBehaviour
             RightMovementFlag = false;
             AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
             GameObject gameManager = GameObject.Find("GameManager");
-            gameManager.GetComponent<GameManager>().RestartLevel();
+            ResetLevelTimer = 1.0f;
             //StartCoroutine(HazardCollision());
         }
     }
@@ -326,5 +333,25 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-
+    void LevelTransitions()
+    {
+        if (NextLevelTimer > 0.0f)
+        {
+            NextLevelTimer -= Time.deltaTime;
+            if (NextLevelTimer <= 0.0f)
+            {
+                GameObject gameManager = GameObject.Find("GameManager");
+                gameManager.GetComponent<GameManager>().GoToNextLevel();
+            }
+        }
+        if (ResetLevelTimer > 0.0f)
+        {
+            ResetLevelTimer -= Time.deltaTime;
+            if (ResetLevelTimer <= 0.0f)
+            {
+                GameObject gameManager = GameObject.Find("GameManager");
+                gameManager.GetComponent<GameManager>().RestartLevel();
+            }
+        }
+    }
 }
