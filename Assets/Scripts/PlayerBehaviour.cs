@@ -180,62 +180,65 @@ public class PlayerBehaviour : MonoBehaviour
     void HandleKeyInputs()
     {
         //Crouch down
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Debug.Log("Crouched");
-            Crouching = true;
-            if (CanJump)
-            {
-                GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, GetComponent<Rigidbody2D>().velocity.y);
-                LeftMovementFlag = false;
-                RightMovementFlag = false;
-            }
-            GetComponent<SpriteRenderer>().sprite = CharacterSprites[1];
-        }
+        //if (Input.GetKeyDown(KeyCode.DownArrow))
+        //{
+        //    Debug.Log("Crouched");
+        //    Crouching = true;
+        //    if (CanJump)
+        //    {
+        //        GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, GetComponent<Rigidbody2D>().velocity.y);
+        //        LeftMovementFlag = false;
+        //        RightMovementFlag = false;
+        //    }
+        //    GetComponent<SpriteRenderer>().sprite = CharacterSprites[1];
+        //}
 
-        if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.001f && Crouching)
-        {
-            Debug.Log("This is happening");
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
-            LeftMovementFlag = false;
-            RightMovementFlag = false;
-        }
+        //if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.001f && Crouching)
+        //{
+        //    Debug.Log("This is happening");
+        //    GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+        //    LeftMovementFlag = false;
+        //    RightMovementFlag = false;
+        //}
 
-        //Crouch up
-        if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            Crouching = false;
-            GetComponent<SpriteRenderer>().sprite = CharacterSprites[0];
-        }
+        ////Crouch up
+        //if (Input.GetKeyUp(KeyCode.DownArrow))
+        //{
+        //    Crouching = false;
+        //    GetComponent<SpriteRenderer>().sprite = CharacterSprites[0];
+        //}
 
         if (!Crouching)
         {
-            //Left movement down
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (!LeftMovementFlag && !RightMovementFlag)
             {
-                if (!LeftMovementFlag)
+                //Left movement down
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                 {
-                    //GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
-                    LeftMovementFlag = true;
-                    FacingRight = false;
-                    //transform.rotation.Set(0.0f, 1.0f, 0.0f, 0.0f);
+                    if (!LeftMovementFlag)
+                    {
+                        //GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
+                        LeftMovementFlag = true;
+                        FacingRight = false;
+                        //transform.rotation.Set(0.0f, 1.0f, 0.0f, 0.0f);
+                    }
                 }
-            }
 
-            //Right movement down
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                if (!RightMovementFlag)
+                //Right movement down
+                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
                 {
-                    GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
-                    //transform.rotation.Set(0.0f, 0.0f, 0.0f, 0.0f);
-                    FacingRight = true;
-                    RightMovementFlag = true;
+                    if (!RightMovementFlag)
+                    {
+                        GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
+                        //transform.rotation.Set(0.0f, 0.0f, 0.0f, 0.0f);
+                        FacingRight = true;
+                        RightMovementFlag = true;
+                    }
                 }
             }
 
             //Left movement up
-            if (Input.GetKeyUp(KeyCode.LeftArrow))
+            if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
             {
                 if (LeftMovementFlag)
                 {
@@ -248,7 +251,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             //Right movement up
-            if (Input.GetKeyUp(KeyCode.RightArrow))
+            if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
             {
                 if (RightMovementFlag)
                 {
@@ -260,7 +263,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             //Jump
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
             {
                 if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.2f)
                 {
@@ -281,7 +284,7 @@ public class PlayerBehaviour : MonoBehaviour
             GameObject myRoadInstance =
              Instantiate(MemoryStanding,
              transform.position,
-             Quaternion.identity) as GameObject;
+             transform.rotation) as GameObject;
 
             if (GetComponent<Rigidbody2D>().velocity.x == 0.0f && GetComponent<Rigidbody2D>().velocity.y == 0.0f)
             {
