@@ -116,7 +116,10 @@ public class GameManager : MonoBehaviour
 
     public void UpdateTimes(float time)
     {
+        Debug.Log("During");
         float prevBest = float.Parse(LevelBestTimes[Application.loadedLevel - 1]);
+        Debug.Log(prevBest);
+        Debug.Log(time);
         if (time < prevBest || prevBest == 0.0)
         {
             LevelBestTimes[Application.loadedLevel - 1] = time.ToString("F2");

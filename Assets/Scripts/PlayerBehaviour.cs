@@ -40,6 +40,8 @@ public class PlayerBehaviour : MonoBehaviour
     public AudioSource DieSound;
     public AudioClip HazardDeathSound;
 
+    float currenttimesincelevelload;
+
     void OnLevelWasLoaded(int level)
     {
         Hazards = GameObject.FindGameObjectsWithTag("Hazard");
@@ -47,38 +49,6 @@ public class PlayerBehaviour : MonoBehaviour
         if (UICanvas != null)
         {
             UICanvas.GetComponent<UIManager>().SetMemoriesText("Memories: " + MaxClones.ToString());
-        }
-    }
-
-    IEnumerator EndLevelFlagCollision()
-    {
-        EndOfLevelSound.Play();
-        GameObject gameManager = GameObject.Find("GameManager");
-        timer = false;
-        move = false;
-        LeftMovementFlag = false;
-        RightMovementFlag = false;
-        JumpFlag = false;
-        float time = Time.timeSinceLevelLoad;
-        gameManager.GetComponent<GameManager>().UpdateTimes(time);
-        gameManager.GetComponent<GameManager>().GoToNextLevel();
-        yield return new WaitForSeconds(1);
-        
-    }
-
-    IEnumerator HazardCollision()
-    {
-        DieSound.Play();
-        GameObject gameManager = GameObject.Find("GameManager");
-        if (gameManager != null)
-        {
-            Debug.Log("Death by hazard");
-            AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
-            timer = false;
-            float time = Time.timeSinceLevelLoad;
-            gameManager.GetComponent<GameManager>().UpdateTimes(time);
-            yield return new WaitForSeconds(1);
-            gameManager.GetComponent<GameManager>().RestartLevel();
         }
     }
 
@@ -183,7 +153,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (Col.gameObject.tag == "EndFlag")
         {
-            //StartCoroutine(EndLevelFlagCollision());
+            currenttimesincelevelload = Time.timeSinceLevelLoad;
             GameObject gameManager = GameObject.Find("GameManager");
             EndOfLevelSound.Play();
             timer = false;
@@ -353,6 +323,7 @@ public class PlayerBehaviour : MonoBehaviour
             if (NextLevelTimer <= 0.0f)
             {
                 GameObject gameManager = GameObject.Find("GameManager");
+                gameManager.GetComponent<GameManager>().UpdateTimes(currenttimesincelevelload);
                 gameManager.GetComponent<GameManager>().GoToNextLevel();
             }
         }

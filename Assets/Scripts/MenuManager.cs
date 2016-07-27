@@ -38,7 +38,6 @@ public class MenuManager : MonoBehaviour {
                 _MenuState = true;
                 Debug.Log("true");
             }
-            
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
