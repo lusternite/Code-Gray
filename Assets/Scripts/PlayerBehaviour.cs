@@ -28,6 +28,7 @@ public class PlayerBehaviour : MonoBehaviour
     public List<GameObject> Clones;
     public int MaxClones = 5;
     public Quaternion PlayerRotation;
+    public Sprite FrozenStandingManSprite;
 
     public AudioSource JumpSound;
     public AudioSource CloneSound;
@@ -281,6 +282,12 @@ public class PlayerBehaviour : MonoBehaviour
              Instantiate(MemoryStanding,
              transform.position,
              Quaternion.identity) as GameObject;
+
+            if (GetComponent<Rigidbody2D>().velocity.x == 0.0f && GetComponent<Rigidbody2D>().velocity.y == 0.0f)
+            {
+                myRoadInstance.GetComponent<SpriteRenderer>().sprite = FrozenStandingManSprite;
+            }
+            
 
             Clones.Add(myRoadInstance);
             if (Clones.Count > MaxClones)
