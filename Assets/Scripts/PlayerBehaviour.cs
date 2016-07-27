@@ -29,7 +29,9 @@ public class PlayerBehaviour : MonoBehaviour
     public List<GameObject> Clones;
     public int MaxClones = 5;
     public Quaternion PlayerRotation;
+    public Vector3 PreviousPosition;
     public Sprite FrozenStandingManSprite;
+    public Sprite WallGrabbingSprite;
 
     public AudioSource JumpSound;
     public AudioSource CloneSound;
@@ -135,7 +137,11 @@ public class PlayerBehaviour : MonoBehaviour
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-HorizontalMovementSpeed, GetComponent<Rigidbody2D>().velocity.y);
                 //transform.rotation.Set(0.0f, 1.0f, 0.0f, 1.0f);
                 FacingRight = false;
-                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.02f)
+                if (Vector3.Magnitude(PreviousPosition - transform.position) < (HorizontalMovementSpeed * Time.fixedDeltaTime / 2))
+                {
+                    GetComponent<Animator>().Play("PlayerWallGrabbingAnim");
+                }
+                else if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.02f)
                 {
                     //GetComponent<Animator>().Play();
                     GetComponent<Animator>().Play("PlayerRunningAnim");
@@ -146,7 +152,11 @@ public class PlayerBehaviour : MonoBehaviour
                 GetComponent<Rigidbody2D>().velocity = new Vector2(HorizontalMovementSpeed, GetComponent<Rigidbody2D>().velocity.y);
                 //transform.rotation.Set(0.0f, 0.0f, 0.0f, 1.0f);
                 FacingRight = true;
-                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.02f)
+                if (Vector3.Magnitude(PreviousPosition - transform.position) < (HorizontalMovementSpeed * Time.fixedDeltaTime / 2))
+                {
+                    GetComponent<Animator>().Play("PlayerWallGrabbingAnim");
+                }
+                else if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.02f)
                 {
                     GetComponent<Animator>().Play("PlayerRunningAnim");
                 }
@@ -159,6 +169,7 @@ public class PlayerBehaviour : MonoBehaviour
                 }
                 GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y);
             }
+            PreviousPosition = transform.position;
         }
     }
 
