@@ -8,6 +8,7 @@ public class ElectricPanel : MonoBehaviour
     Button ButtonTrigger;
     public SpriteRenderer renderer;
     public bool Inverted;
+    public bool IsVert;
     public AudioSource ElectricBuzzSound;
 
     // Use this for initialization
@@ -29,7 +30,14 @@ public class ElectricPanel : MonoBehaviour
                 //renderer.color = new Color(1, 1, 26 / 255, 1);
                 for (int i = 0; i < transform.childCount; i++)
                 {
-                    transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim");
+                    if (IsVert)
+                    {
+                        transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelVert_On");
+                    }
+                    else
+                    {
+                        transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim");
+                    }
                 }
             }
             else
@@ -38,7 +46,14 @@ public class ElectricPanel : MonoBehaviour
                 //renderer.color = new Color(0f, 0f, 0f, 0.2f);
                 for (int i = 0; i < transform.childCount; i++)
                 {
-                    transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim_Off");
+                    if (IsVert)
+                    {
+                        transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelVert_Off");
+                    }
+                    else
+                    {
+                        transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim_Off");
+                    }
                 }
             }
         }
@@ -50,7 +65,14 @@ public class ElectricPanel : MonoBehaviour
                 //renderer.color = new Color(0f, 0f, 0f, 0.2f);
                 for (int i = 0; i < transform.childCount; i++)
                 {
-                    transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim_Off");
+                    if (IsVert)
+                    {
+                        transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelVert_Off");
+                    }
+                    else
+                    {
+                        transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim_Off");
+                    }
                 }
             }
             else
@@ -59,7 +81,14 @@ public class ElectricPanel : MonoBehaviour
                 //renderer.color = new Color(1, 1, 26 / 255, 1);
                 for (int i = 0; i < transform.childCount; i++)
                 {
-                    transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim");
+                    if (IsVert)
+                    {
+                        transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelVert_On");
+                    }
+                    else
+                    {
+                        transform.GetChild(i).GetComponent<Animator>().Play("ElectricPanelAnim");
+                    }
                 }
             }
         }
