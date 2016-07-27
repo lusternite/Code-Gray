@@ -57,8 +57,9 @@ public class PlayerBehaviour : MonoBehaviour
         JumpFlag = false;
         float time = Time.timeSinceLevelLoad;
         gameManager.GetComponent<GameManager>().UpdateTimes(time);
-        yield return new WaitForSeconds(1);
         gameManager.GetComponent<GameManager>().GoToNextLevel();
+        yield return new WaitForSeconds(1);
+        
     }
 
     IEnumerator HazardCollision()
@@ -169,7 +170,9 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (Col.gameObject.tag == "EndFlag")
         {
-            StartCoroutine(EndLevelFlagCollision());
+            //StartCoroutine(EndLevelFlagCollision());
+            GameObject gameManager = GameObject.Find("GameManager");
+            gameManager.GetComponent<GameManager>().GoToNextLevel();
         }
         if (Col.gameObject.tag == "Hazard")
         {
@@ -179,7 +182,10 @@ public class PlayerBehaviour : MonoBehaviour
             GetComponent<SpriteRenderer>().enabled = false;
             LeftMovementFlag = false;
             RightMovementFlag = false;
-            StartCoroutine(HazardCollision());
+            AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
+            GameObject gameManager = GameObject.Find("GameManager");
+            gameManager.GetComponent<GameManager>().RestartLevel();
+            //StartCoroutine(HazardCollision());
         }
     }
 

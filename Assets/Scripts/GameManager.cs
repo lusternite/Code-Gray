@@ -84,8 +84,8 @@ public class GameManager : MonoBehaviour
     {
         if (Application.loadedLevel < Application.levelCount - 1)
         {
-            Debug.Log(Application.loadedLevel);
-            Debug.Log(Application.levelCount);
+            //Debug.Log(Application.loadedLevel);
+            //Debug.Log(Application.levelCount);
             Application.LoadLevel(Application.loadedLevel + 1);
         }
         else 
