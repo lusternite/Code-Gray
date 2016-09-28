@@ -40,6 +40,9 @@ public class PlayerBehaviour : MonoBehaviour
     public AudioSource DieSound;
     public AudioClip HazardDeathSound;
 
+    GameObject door;
+    bool inDoor = false;
+
     float currenttimesincelevelload;
 
     void OnLevelWasLoaded(int level)
@@ -146,19 +149,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D Col)
     {
-        GetComponent<Animator>().Play("PlayerStandingAnim");
-        if (Col.gameObject.tag == "EndFlag")
-        {
-            currenttimesincelevelload = Time.timeSinceLevelLoad;
-            GameObject gameManager = GameObject.Find("GameManager");
-            EndOfLevelSound.Play();
-            timer = false;
-            move = false;
-            LeftMovementFlag = false;
-            RightMovementFlag = false;
-            JumpFlag = false;
-            NextLevelTimer = 1.0f;
-        }
         if (Col.gameObject.tag == "Hazard")
         {
             IsActive = false;
@@ -178,15 +168,9 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (Col.gameObject.tag == "EndFlag")
         {
-            currenttimesincelevelload = Time.timeSinceLevelLoad;
-            GameObject gameManager = GameObject.Find("GameManager");
-            EndOfLevelSound.Play();
-            timer = false;
-            move = false;
-            LeftMovementFlag = false;
-            RightMovementFlag = false;
-            JumpFlag = false;
-            NextLevelTimer = 1.0f;
+            inDoor = true;
+            GameObject ddoor = Col.gameObject;
+            door = ddoor;
         }
         if (Col.gameObject.tag == "Hazard")
         {
@@ -200,6 +184,14 @@ public class PlayerBehaviour : MonoBehaviour
             GameObject gameManager = GameObject.Find("GameManager");
             ResetLevelTimer = 1.0f;
             //StartCoroutine(HazardCollision());
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D Col)
+    {
+        if (Col.gameObject.tag == "EndFlag")
+        {
+            inDoor = false;
         }
     }
 
@@ -294,15 +286,29 @@ public class PlayerBehaviour : MonoBehaviour
             //Jump
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
             {
-                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.2f)
+                if (inDoor)
                 {
-                    if (CanJump)
+                    currenttimesincelevelload = Time.timeSinceLevelLoad;
+                    GameObject gameManager = GameObject.Find("GameManager");
+                    EndOfLevelSound.Play();
+                    timer = false;
+                    move = false;
+                    LeftMovementFlag = false;
+                    RightMovementFlag = false;
+                    JumpFlag = false;
+                    NextLevelTimer = 1.0f;
+                }
+                else
+                {
+                    if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.2f)
                     {
-                        JumpFlag = true;
-                        GetComponent<Animator>().Play("PlayerJumpAnim");
-                        JumpSound.Play();
+                        if (CanJump)
+                        {
+                            JumpFlag = true;
+                            GetComponent<Animator>().Play("PlayerJumpAnim");
+                            JumpSound.Play();
+                        }
                     }
-
                 }
             }
         }
@@ -319,7 +325,6 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 myRoadInstance.GetComponent<SpriteRenderer>().sprite = FrozenStandingManSprite;
             }
-
 
             Clones.Add(myRoadInstance);
             if (Clones.Count > MaxClones)
@@ -347,9 +352,7 @@ public class PlayerBehaviour : MonoBehaviour
             NextLevelTimer -= Time.deltaTime;
             if (NextLevelTimer <= 0.0f)
             {
-                GameObject gameManager = GameObject.Find("GameManager");
-                gameManager.GetComponent<GameManager>().UpdateTimes(currenttimesincelevelload);
-                gameManager.GetComponent<GameManager>().GoToNextLevel();
+                door.GetComponent<LevelDoorScript>().GoToLevel();
             }
         }
         if (ResetLevelTimer > 0.0f)
