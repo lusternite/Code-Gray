@@ -147,6 +147,31 @@ public class PlayerBehaviour : MonoBehaviour
     void OnCollisionEnter2D(Collision2D Col)
     {
         GetComponent<Animator>().Play("PlayerStandingAnim");
+        if (Col.gameObject.tag == "EndFlag")
+        {
+            currenttimesincelevelload = Time.timeSinceLevelLoad;
+            GameObject gameManager = GameObject.Find("GameManager");
+            EndOfLevelSound.Play();
+            timer = false;
+            move = false;
+            LeftMovementFlag = false;
+            RightMovementFlag = false;
+            JumpFlag = false;
+            NextLevelTimer = 1.0f;
+        }
+        if (Col.gameObject.tag == "Hazard")
+        {
+            IsActive = false;
+            GetComponent<Rigidbody2D>().velocity *= 0.0f;
+            GetComponent<Rigidbody2D>().gravityScale = 0.0f;
+            GetComponent<SpriteRenderer>().enabled = false;
+            LeftMovementFlag = false;
+            RightMovementFlag = false;
+            AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
+            GameObject gameManager = GameObject.Find("GameManager");
+            ResetLevelTimer = 1.0f;
+            //StartCoroutine(HazardCollision());
+        }
     }
 
     void OnTriggerEnter2D(Collider2D Col)
