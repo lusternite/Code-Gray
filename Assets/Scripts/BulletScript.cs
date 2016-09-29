@@ -10,7 +10,7 @@ public class BulletScript : MonoBehaviour
     void Start()
     {
 
-        GetComponent<Rigidbody2D>().velocity = _Velocity;
+        //GetComponent<Rigidbody2D>().velocity = _Velocity;
     }
 
     // Update is called once per frame

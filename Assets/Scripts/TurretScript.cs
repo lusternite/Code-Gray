@@ -61,10 +61,14 @@ public class TurretScript : MonoBehaviour {
             {
                 Debug.Log("sfdhsgf");
                 _fTimeSince = Time.time;
+                Vector2 _frontVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad * transform.localEulerAngles.z), Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.z));
                 Vector3 _newVector = transform.position;
-                _newVector.x = _newVector.x + 1.0f;
+                Debug.Log(_frontVector);
+                //glm::vec2(m_BulletSpeed * glm::cos(currentAngle), m_BulletSpeed * glm::sin(currentAngle)
+                _newVector.x += _frontVector.x;
+                _newVector.y += _frontVector.y;
                 GameObject Yes = Instantiate(Bullet, _newVector, transform.rotation) as GameObject;
-                Yes.GetComponent<Rigidbody2D>().velocity = _fvBulletVelocity;
+                Yes.GetComponent<Rigidbody2D>().velocity = _fBulletVelocity * _frontVector;
             }
         }
     }
