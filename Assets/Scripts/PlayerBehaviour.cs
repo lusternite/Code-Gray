@@ -1,45 +1,50 @@
 
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+    //Flags
     public bool LeftMovementFlag;
     public bool RightMovementFlag;
     public bool JumpFlag;
     public bool FacingRight = true;
-    bool timer = true;
-    bool move = true;
+    bool LevelTimerOn = true;
+    bool CanMove = true;
     public bool CanJump;
-    public bool Crouching;
     public bool IsActive = true;
+
+    //Physics
     Vector2 HorizontalVelocity;
     Vector2 VerticalVelocity;
     Vector3 StartPosition;
-    float JumpingDuration = 1.0f;
-    float NextLevelTimer = 0.0f;
-    float ResetLevelTimer = 0.0f;
-    public float JumpingTimer;
     public float HorizontalMovementSpeed = 65.0f;
     public float VerticalMovementSpeed = 69.0f;
+    public Quaternion PlayerRotation;
+    public Vector3 PreviousPosition;
+
+    //Timers
+    float JumpingDuration = 1.0f;
+    float NextLevelTimer = 0.0f;
+    float RespawnTimer = 0.0f;
+    public float JumpFlagTimer = 0.0f;
+    public float JumpingTimer;
+
+    //Prefabs
     public GameObject MemoryStanding;
     public GameObject MemoryCrouch;
     GameObject[] Hazards;
     public Sprite[] CharacterSprites;
     public List<GameObject> Clones;
     public int MaxClones = 5;
-    public Quaternion PlayerRotation;
-    public Vector3 PreviousPosition;
     public Sprite FrozenStandingManSprite;
     public Sprite WallGrabbingSprite;
-
     public AudioSource JumpSound;
     public AudioSource CloneSound;
     public AudioSource EndOfLevelSound;
     public AudioSource DieSound;
     public AudioClip HazardDeathSound;
-
     GameObject door;
     bool inDoor = false;
 
@@ -70,7 +75,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (IsActive)
         {
-            if (move) HandleKeyInputs();
+            if (CanMove) HandleKeyInputs();
             //HandleJumping();
             if (FacingRight)
             {
@@ -84,17 +89,18 @@ public class PlayerBehaviour : MonoBehaviour
             GameObject UICanvas = GameObject.Find("Canvas");
             if (UICanvas != null)
             {
-                if (timer) UICanvas.GetComponent<UIManager>().SetTimerText(Time.timeSinceLevelLoad.ToString("F2"));
+                if (LevelTimerOn) UICanvas.GetComponent<UIManager>().SetTimerText(Time.timeSinceLevelLoad.ToString("F2"));
             }
         }
 
-        LevelTransitions();
+        HandleTimers();
     }
 
     void FixedUpdate()
     {
         if (IsActive)
         {
+
             if (JumpFlag)
             {
                 GetComponent<Rigidbody2D>().velocity += VerticalVelocity;
@@ -113,13 +119,14 @@ public class PlayerBehaviour : MonoBehaviour
                 FacingRight = false;
                 if (Vector3.Magnitude(PreviousPosition - transform.position) < (HorizontalMovementSpeed * Time.fixedDeltaTime / 2))
                 {
-                    GetComponent<Animator>().Play("PlayerWallGrabbingAnim");
+                    //GetComponent<Animator>().Play("PlayerWallGrabbingAnim");
                 }
                 else if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.02f)
                 {
                     //GetComponent<Animator>().Play();
                     GetComponent<Animator>().Play("PlayerRunningAnim");
                 }
+                //Debug.Log(GetComponent<Rigidbody2D>().velocity);
             }
             else if (RightMovementFlag && !LeftMovementFlag)
             {
@@ -128,7 +135,7 @@ public class PlayerBehaviour : MonoBehaviour
                 FacingRight = true;
                 if (Vector3.Magnitude(PreviousPosition - transform.position) < (HorizontalMovementSpeed * Time.fixedDeltaTime / 2))
                 {
-                    GetComponent<Animator>().Play("PlayerWallGrabbingAnim");
+                    //GetComponent<Animator>().Play("PlayerWallGrabbingAnim");
                 }
                 else if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.02f)
                 {
@@ -143,6 +150,7 @@ public class PlayerBehaviour : MonoBehaviour
                 }
                 GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y);
             }
+            HandleWallDetection();
             PreviousPosition = transform.position;
         }
     }
@@ -159,7 +167,7 @@ public class PlayerBehaviour : MonoBehaviour
             RightMovementFlag = false;
             AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
             GameObject gameManager = GameObject.Find("GameManager");
-            ResetLevelTimer = 1.0f;
+            RespawnTimer = 1.0f;
             //StartCoroutine(HazardCollision());
         }
     }
@@ -182,7 +190,7 @@ public class PlayerBehaviour : MonoBehaviour
             RightMovementFlag = false;
             AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
             GameObject gameManager = GameObject.Find("GameManager");
-            ResetLevelTimer = 1.0f;
+            RespawnTimer = 1.0f;
             //StartCoroutine(HazardCollision());
         }
     }
@@ -197,124 +205,93 @@ public class PlayerBehaviour : MonoBehaviour
 
     void HandleKeyInputs()
     {
-        //Crouch down
-        //if (Input.GetKeyDown(KeyCode.DownArrow))
-        //{
-        //    Debug.Log("Crouched");
-        //    Crouching = true;
-        //    if (CanJump)
-        //    {
-        //        GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, GetComponent<Rigidbody2D>().velocity.y);
-        //        LeftMovementFlag = false;
-        //        RightMovementFlag = false;
-        //    }
-        //    GetComponent<SpriteRenderer>().sprite = CharacterSprites[1];
-        //}
-
-        //if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.001f && Crouching)
-        //{
-        //    Debug.Log("This is happening");
-        //    GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
-        //    LeftMovementFlag = false;
-        //    RightMovementFlag = false;
-        //}
-
-        ////Crouch up
-        //if (Input.GetKeyUp(KeyCode.DownArrow))
-        //{
-        //    Crouching = false;
-        //    GetComponent<SpriteRenderer>().sprite = CharacterSprites[0];
-        //}
-
-        if (!Crouching)
+        //Left movement down
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            //Left movement down
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+            if (!LeftMovementFlag)
             {
-                if (!LeftMovementFlag)
-                {
-                    //GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
-                    LeftMovementFlag = true;
-                    //FacingRight = false;
-                    //transform.rotation.Set(0.0f, 1.0f, 0.0f, 0.0f);
-                }
+                //GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
+                LeftMovementFlag = true;
+                //FacingRight = false;
+                //transform.rotation.Set(0.0f, 1.0f, 0.0f, 0.0f);
             }
+        }
 
-            //Right movement down
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        //Right movement down
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            if (!RightMovementFlag)
             {
+                GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
+                //transform.rotation.Set(0.0f, 0.0f, 0.0f, 0.0f);
+                //FacingRight = true;
+                RightMovementFlag = true;
+            }
+        }
+
+        //Left movement up
+        if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
+        {
+            if (LeftMovementFlag)
+            {
+                GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
                 if (!RightMovementFlag)
                 {
-                    GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
-                    //transform.rotation.Set(0.0f, 0.0f, 0.0f, 0.0f);
-                    //FacingRight = true;
-                    RightMovementFlag = true;
+                    //GetComponent<Animator>().Play("PlayerStandingAnim");
                 }
+                LeftMovementFlag = false;
+                Debug.Log("Left arrowkey up");
             }
 
-            //Left movement up
-            if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
-            {
-                if (LeftMovementFlag)
-                {
-                    GetComponent<Rigidbody2D>().velocity += HorizontalVelocity;
-                    if (!RightMovementFlag)
-                    {
-                        //GetComponent<Animator>().Play("PlayerStandingAnim");
-                    }
-                    LeftMovementFlag = false;
-                    Debug.Log("Left arrowkey up");
-                }
+        }
 
+        //Right movement up
+        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
+        {
+            if (RightMovementFlag)
+            {
+                GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
+                if (!LeftMovementFlag)
+                {
+                    //GetComponent<Animator>().Play("PlayerStandingAnim");
+                }
+                RightMovementFlag = false;
+                Debug.Log("Right arrowkey up");
             }
+        }
 
-            //Right movement up
-            if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
+        //Jump
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            if (inDoor)
             {
-                if (RightMovementFlag)
-                {
-                    GetComponent<Rigidbody2D>().velocity += -HorizontalVelocity;
-                    if (!LeftMovementFlag)
-                    {
-                        //GetComponent<Animator>().Play("PlayerStandingAnim");
-                    }
-                    RightMovementFlag = false;
-                    Debug.Log("Right arrowkey up");
-                }
+                currenttimesincelevelload = Time.timeSinceLevelLoad;
+                GameObject gameManager = GameObject.Find("GameManager");
+                EndOfLevelSound.Play();
+                LevelTimerOn = false;
+                CanMove = false;
+                LeftMovementFlag = false;
+                RightMovementFlag = false;
+                JumpFlag = false;
+                NextLevelTimer = 1.0f;
             }
-
-            //Jump
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            else
             {
-                if (inDoor)
+                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 120.6f)
                 {
-                    currenttimesincelevelload = Time.timeSinceLevelLoad;
-                    GameObject gameManager = GameObject.Find("GameManager");
-                    EndOfLevelSound.Play();
-                    timer = false;
-                    move = false;
-                    LeftMovementFlag = false;
-                    RightMovementFlag = false;
-                    JumpFlag = false;
-                    NextLevelTimer = 1.0f;
-                }
-                else
-                {
-                    if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 0.2f)
+                    if (CanJump)
                     {
-                        if (CanJump)
-                        {
-                            JumpFlag = true;
-                            GetComponent<Animator>().Play("PlayerJumpAnim");
-                            JumpSound.Play();
-                        }
+                        JumpFlag = true;
+                        GetComponent<Animator>().Play("PlayerJumpAnim");
+                        JumpSound.Play();
+                        CanJump = false;
                     }
                 }
             }
         }
 
         //Freeze Mechanic
-        if (Input.GetKeyDown(KeyCode.Space) && move)
+        if (Input.GetKeyDown(KeyCode.Space) && CanMove)
         {
             GameObject myRoadInstance =
              Instantiate(MemoryStanding,
@@ -345,7 +322,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    void LevelTransitions()
+    void HandleTimers()
     {
         if (NextLevelTimer > 0.0f)
         {
@@ -355,14 +332,62 @@ public class PlayerBehaviour : MonoBehaviour
                 door.GetComponent<LevelDoorScript>().GoToLevel();
             }
         }
-        if (ResetLevelTimer > 0.0f)
+        if (RespawnTimer > 0.0f)
         {
-            ResetLevelTimer -= Time.deltaTime;
-            if (ResetLevelTimer <= 0.0f)
+            RespawnTimer -= Time.deltaTime;
+            if (RespawnTimer <= 0.0f)
             {
-                GameObject gameManager = GameObject.Find("GameManager");
-                gameManager.GetComponent<GameManager>().RestartLevel();
+                //GameObject gameManager = GameObject.Find("GameManager");
+                //gameManager.GetComponent<GameManager>().RestartLevel();
+                transform.position = StartPosition;
+                IsActive = true;
+                GetComponent<SpriteRenderer>().enabled = true;
+                GetComponent<Rigidbody2D>().gravityScale = 1.0f;
             }
         }
+        if (JumpFlagTimer > 0.0f)
+        {
+            JumpFlagTimer -= Time.deltaTime;
+            if (JumpFlagTimer <= 0.0f)
+            {
+                CanJump = false;
+            }
+        }
+    }
+
+    //Uses raycasting to detect walls on either side
+    //Will slide if walls are detected
+    void HandleWallDetection()
+    {
+        if (GetComponent<Rigidbody2D>().velocity.y <= 0.0f)
+        {
+            RaycastHit2D leftHit = Physics2D.Raycast(new Vector2(transform.position.x - 0.4f, transform.position.y), Vector2.left, 0.05f);
+            RaycastHit2D rightHit = Physics2D.Raycast(new Vector2(transform.position.x + 0.4f, transform.position.y), Vector2.right, 0.05f);
+            if (leftHit)
+            {
+                if (leftHit.transform.tag == "Object")
+                {
+                    if (LeftMovementFlag)
+                    {
+                        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, -4.4f);
+                    }
+                    Debug.Log("Wall detected - left");
+                    Debug.Log(leftHit.transform.name);
+                }
+            }
+            else if (rightHit)
+            {
+                if (rightHit.transform.tag == "Object")
+                {
+                    if (RightMovementFlag)
+                    {
+                        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, -4.4f);
+                    }
+                    Debug.Log("Wall detected - right");
+                    Debug.Log(rightHit.transform.name);
+                }
+            }
+        }
+
     }
 }

@@ -19,6 +19,7 @@ public class ObjectCollider : MonoBehaviour {
         if (Col.gameObject.tag == "Object")
         {
             transform.parent.GetComponent<PlayerBehaviour>().CanJump = true;
+            transform.parent.GetComponent<PlayerBehaviour>().JumpFlagTimer = 0.0f;
         }
     }
 
@@ -27,7 +28,7 @@ public class ObjectCollider : MonoBehaviour {
         //Debug.Log("Triggered");
         if (Col.gameObject.tag == "Object")
         {
-            transform.parent.GetComponent<PlayerBehaviour>().CanJump = false;
+            transform.parent.GetComponent<PlayerBehaviour>().JumpFlagTimer = 0.1f;
         }
     }
 }
