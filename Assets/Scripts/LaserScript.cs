@@ -18,14 +18,7 @@ public class LaserScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        if (Inverted == true)
-        {
-            _isLaserOn = false;
-        }
-        else
-        {
-            _isLaserOn = true;
-        }
+        _isLaserOn = Inverted ? false : true;
 
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.enabled = true;
@@ -39,25 +32,11 @@ public class LaserScript : MonoBehaviour
     {
         if (ButtonTrigger.ButtonPressed)
         {
-            if (Inverted == true)
-            {
-                _isLaserOn = true;
-            }
-            else
-            {
-                _isLaserOn = false;
-            }
+            _isLaserOn = Inverted ? true : false;
         }
         else
         {
-            if (Inverted == true)
-            {
-                _isLaserOn = false;
-            }
-            else
-            {
-                _isLaserOn = true;
-            }
+            _isLaserOn = Inverted ? false : true;
         }
 
         if (_isLaserOn == true)
@@ -71,7 +50,19 @@ public class LaserScript : MonoBehaviour
 
             RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
             laserHit.position = hit.point;
-            lineRenderer.SetPosition(0, transform.position);
+
+            // Check collisions
+            if (hit.collider.gameObject.name == "Memory Upright Prefab(Clone)")
+            {
+                hit.collider.gameObject.GetComponent<MemoryScript>().TakeDamage(15);
+                Debug.Log("laser hit memory");
+            }
+            if (hit.collider.gameObject.name == "Player")
+            {
+                hit.collider.gameObject.GetComponent<PlayerBehaviour>().Kill();
+            }
+
+                lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, laserHit.position);
         }
         else

@@ -182,17 +182,22 @@ public class PlayerBehaviour : MonoBehaviour
         }
         if (Col.gameObject.tag == "Hazard")
         {
-            IsActive = false;
-            GetComponent<Rigidbody2D>().velocity *= 0.0f;
-            GetComponent<Rigidbody2D>().gravityScale = 0.0f;
-            GetComponent<SpriteRenderer>().enabled = false;
-            LeftMovementFlag = false;
-            RightMovementFlag = false;
-            AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
-            GameObject gameManager = GameObject.Find("GameManager");
-            RespawnTimer = 1.0f;
+            Kill();
             //StartCoroutine(HazardCollision());
         }
+    }
+
+    public void Kill()
+    {
+        IsActive = false;
+        GetComponent<Rigidbody2D>().velocity *= 0.0f;
+        GetComponent<Rigidbody2D>().gravityScale = 0.0f;
+        GetComponent<SpriteRenderer>().enabled = false;
+        LeftMovementFlag = false;
+        RightMovementFlag = false;
+        AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
+        GameObject gameManager = GameObject.Find("GameManager");
+        RespawnTimer = 1.0f;
     }
 
     void OnTriggerExit2D(Collider2D Col)
