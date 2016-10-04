@@ -13,6 +13,7 @@ public class LaserScript : MonoBehaviour
     private LineRenderer lineRenderer;
 
     public bool _isLaserOn;
+    public bool XORgate;
 
     // Use this for initialization
     void Start ()
@@ -27,18 +28,39 @@ public class LaserScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        for (int i = 0; i < ButtonTriggerObjects.Length; ++i)
+        int numPressed = 0;
+        if (XORgate)
         {
-            if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
+            for (int i = 0; i < ButtonTriggerObjects.Length; ++i)
             {
-                _isLaserOn = Inverted ? true : false;
-                break;
-            }
-            else
-            {
-                _isLaserOn = Inverted ? false : true;
+                if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
+                {
+                    numPressed += 1;
+                }
             }
         }
+        else
+        {
+            for (int i = 0; i < ButtonTriggerObjects.Length; ++i)
+            {
+                if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
+                {
+                    numPressed += 1;
+                    break;
+                }
+            }
+        }
+
+        if (numPressed % 2 == 1)
+        {
+            _isLaserOn = Inverted ? true : false;
+        }
+        else
+        {
+            _isLaserOn = Inverted ? false : true;
+        }
+
+
         if (_isLaserOn == true)
         {
             lineRenderer.enabled = true;
