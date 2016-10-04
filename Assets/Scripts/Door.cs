@@ -3,48 +3,44 @@ using System.Collections;
 
 public class Door : MonoBehaviour {
 
-    public GameObject ButtonTriggerObject;
+    public GameObject[] ButtonTriggerObjects;
     public Sprite DoorClosed;
     public Sprite DoorOpen;
     Button ButtonTrigger;
     public bool Inverted;
+    public bool IsDoorOpen;
 
 	// Use this for initialization
 	void Start () {
-        ButtonTrigger = ButtonTriggerObject.GetComponent<Button>();
-	}
+        IsDoorOpen = Inverted ? false : true;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Inverted)
+        for (int i = 0; i < ButtonTriggerObjects.Length; ++i)
         {
-            if (ButtonTrigger.ButtonPressed)
+            if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
             {
-                GetComponent<BoxCollider2D>().enabled = true;
-                //GetComponent<SpriteRenderer>().enabled = true;
-                GetComponent<SpriteRenderer>().sprite = DoorClosed;
+                IsDoorOpen = Inverted ? true : false;
+                break;
             }
             else
             {
-                GetComponent<BoxCollider2D>().enabled = false;
-                //GetComponent<SpriteRenderer>().enabled = false;
-                GetComponent<SpriteRenderer>().sprite = DoorOpen;
+                IsDoorOpen = Inverted ? false : true;
             }
+        }
+        if (IsDoorOpen)
+        {
+            GetComponent<BoxCollider2D>().enabled = true;
+            //GetComponent<SpriteRenderer>().enabled = true;
+            GetComponent<SpriteRenderer>().sprite = DoorClosed;
         }
         else
         {
-            if (ButtonTrigger.ButtonPressed)
-            {
-                GetComponent<BoxCollider2D>().enabled = false;
-                //GetComponent<SpriteRenderer>().enabled = false;
-                GetComponent<SpriteRenderer>().sprite = DoorOpen;
-            }
-            else
-            {
-                GetComponent<BoxCollider2D>().enabled = true;
-                //GetComponent<SpriteRenderer>().enabled = true;
-                GetComponent<SpriteRenderer>().sprite = DoorClosed;
-            }
+            GetComponent<BoxCollider2D>().enabled = false;
+            //GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<SpriteRenderer>().sprite = DoorOpen;
         }
+        
 	}
 }

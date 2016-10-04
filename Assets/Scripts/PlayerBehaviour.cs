@@ -34,6 +34,7 @@ public class PlayerBehaviour : MonoBehaviour
     //Prefabs
     public GameObject MemoryStanding;
     public GameObject MemoryCrouch;
+    public int MemoryHealth = 1000;
     GameObject[] Hazards;
     public Sprite[] CharacterSprites;
     public List<GameObject> Clones;
@@ -159,6 +160,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (Col.gameObject.tag == "Hazard")
         {
+            CanMove = false;
             IsActive = false;
             GetComponent<Rigidbody2D>().velocity *= 0.0f;
             GetComponent<Rigidbody2D>().gravityScale = 0.0f;
@@ -168,6 +170,7 @@ public class PlayerBehaviour : MonoBehaviour
             AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
             GameObject gameManager = GameObject.Find("GameManager");
             RespawnTimer = 1.0f;
+            GetComponent<BoxCollider2D>().enabled = false;
             //StartCoroutine(HazardCollision());
         }
     }
@@ -180,7 +183,7 @@ public class PlayerBehaviour : MonoBehaviour
             GameObject ddoor = Col.gameObject;
             door = ddoor;
         }
-        if (Col.gameObject.tag == "Hazard")
+        if (Col.gameObject.tag == "Hazard" && IsActive)
         {
             Kill();
             //StartCoroutine(HazardCollision());
@@ -201,10 +204,12 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Kill()
     {
+        CanMove = false;
         IsActive = false;
         GetComponent<Rigidbody2D>().velocity *= 0.0f;
         GetComponent<Rigidbody2D>().gravityScale = 0.0f;
         GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = false;
         LeftMovementFlag = false;
         RightMovementFlag = false;
         AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
@@ -319,6 +324,7 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 myRoadInstance.GetComponent<SpriteRenderer>().sprite = FrozenStandingManSprite;
             }
+            myRoadInstance.GetComponent<MemoryScript>().health = MemoryHealth;
 
             Clones.Add(myRoadInstance);
             if (Clones.Count > MaxClones)
@@ -358,8 +364,10 @@ public class PlayerBehaviour : MonoBehaviour
                 //gameManager.GetComponent<GameManager>().RestartLevel();
                 transform.position = StartPosition;
                 IsActive = true;
+                CanMove = true;
                 GetComponent<SpriteRenderer>().enabled = true;
                 GetComponent<Rigidbody2D>().gravityScale = 1.0f;
+                GetComponent<BoxCollider2D>().enabled = true;
             }
         }
         if (JumpFlagTimer > 0.0f)
