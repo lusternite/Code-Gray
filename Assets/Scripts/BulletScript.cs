@@ -9,7 +9,6 @@ public class BulletScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         //GetComponent<Rigidbody2D>().velocity = _Velocity;
     }
 
