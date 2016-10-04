@@ -3,8 +3,7 @@ using System.Collections;
 
 public class TurretScript : MonoBehaviour {
 
-    public GameObject ButtonTriggerObject = null;
-    Button ButtonTrigger;
+    public GameObject[] ButtonTriggerObjects;
     public bool Inverted;
     public float _fTimer = 2.5f;
     public float _fBulletVelocity;
@@ -16,30 +15,27 @@ public class TurretScript : MonoBehaviour {
     public bool IsTurretOn;
 
     // Use this for initialization
-    void Start () {
-
+    void Start ()
+    {
         IsTurretOn = Inverted ? false : true;
-
-        if (ButtonTriggerObject != null)
-        {
-            ButtonTrigger = ButtonTriggerObject.GetComponent<Button>();
-        }
     }
 	
 	// Update is called once per frame
-	void Update () {
-        if (ButtonTriggerObject != null)
+	void Update ()
+    {
+        for (int i = 0; i < ButtonTriggerObjects.Length; ++i)
         {
-            if (ButtonTrigger.ButtonPressed)
+            if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
             {
                 IsTurretOn = Inverted ? true : false;
+                break;
             }
             else
             {
                 IsTurretOn = Inverted ? false : true;
             }
         }
-        if (IsTurretOn || ButtonTriggerObject == null)
+        if (IsTurretOn)
         {
             if (Time.time > _fTimeSince + _fTimer)
             {
