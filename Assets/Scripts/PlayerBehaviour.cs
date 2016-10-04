@@ -20,7 +20,7 @@ public class PlayerBehaviour : MonoBehaviour
     Vector2 VerticalVelocity;
     Vector3 StartPosition;
     public float HorizontalMovementSpeed = 65.0f;
-    public float VerticalMovementSpeed = 69.0f;
+    public float VerticalMovementSpeed = 100.0f;
     public Quaternion PlayerRotation;
     public Vector3 PreviousPosition;
 

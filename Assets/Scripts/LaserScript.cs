@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LaserScript : MonoBehaviour
 {
-    public GameObject ButtonTriggerObject;
+    public GameObject ButtonTriggerObject = null;
     Button ButtonTrigger;
     public bool Inverted = false;
     public Transform laserHit;
@@ -24,22 +24,27 @@ public class LaserScript : MonoBehaviour
         lineRenderer.enabled = true;
         lineRenderer.useWorldSpace = true;
 
-        ButtonTrigger = ButtonTriggerObject.GetComponent<Button>();
+        if (ButtonTriggerObject != null)
+        {
+            ButtonTrigger = ButtonTriggerObject.GetComponent<Button>();
+        }
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (ButtonTrigger.ButtonPressed)
+        if (ButtonTriggerObject != null)
         {
-            _isLaserOn = Inverted ? true : false;
+            if (ButtonTrigger.ButtonPressed)
+            {
+                _isLaserOn = Inverted ? true : false;
+            }
+            else
+            {
+                _isLaserOn = Inverted ? false : true;
+            }
         }
-        else
-        {
-            _isLaserOn = Inverted ? false : true;
-        }
-
-        if (_isLaserOn == true)
+        if (_isLaserOn == true || ButtonTriggerObject == null)
         {
             lineRenderer.enabled = true;
             lineRenderer.useWorldSpace = true;
