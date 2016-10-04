@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Door : MonoBehaviour {
+public class Door : MonoBehaviour
+{
 
     public GameObject[] ButtonTriggerObjects;
     public Sprite DoorClosed;
@@ -11,36 +12,80 @@ public class Door : MonoBehaviour {
     public bool IsDoorOpen;
 
 	// Use this for initialization
-	void Start () {
-        IsDoorOpen = Inverted ? false : true;
-    }
-	
-	// Update is called once per frame
-	void Update () {
+	void Start ()
+    {
+        
+	}
+
+    // Update is called once per frame
+    void Update()
+    {
+        int numPressed = 0;
         for (int i = 0; i < ButtonTriggerObjects.Length; ++i)
         {
             if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
+                numPressed += 1;
+        }
+
+        if (numPressed % 2 == 1)
+        {
+            if (Inverted)
             {
-                IsDoorOpen = Inverted ? true : false;
-                break;
+                GetComponent<BoxCollider2D>().enabled = true;
+                GetComponent<SpriteRenderer>().sprite = DoorClosed;
             }
             else
             {
-                IsDoorOpen = Inverted ? false : true;
+                GetComponent<BoxCollider2D>().enabled = false;
+                GetComponent<SpriteRenderer>().sprite = DoorOpen;
             }
-        }
-        if (IsDoorOpen)
-        {
-            GetComponent<BoxCollider2D>().enabled = true;
-            //GetComponent<SpriteRenderer>().enabled = true;
-            GetComponent<SpriteRenderer>().sprite = DoorClosed;
         }
         else
         {
-            GetComponent<BoxCollider2D>().enabled = false;
-            //GetComponent<SpriteRenderer>().enabled = false;
-            GetComponent<SpriteRenderer>().sprite = DoorOpen;
+            if (Inverted)
+            {
+                GetComponent<BoxCollider2D>().enabled = false;
+                GetComponent<SpriteRenderer>().sprite = DoorOpen;
+            }
+            else
+            {
+                GetComponent<BoxCollider2D>().enabled = true;
+                GetComponent<SpriteRenderer>().sprite = DoorClosed;
+            }
         }
-        
-	}
+    }
+ //           if (Inverted)
+ //           {
+ //               if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
+ //               {
+ //                   GetComponent<BoxCollider2D>().enabled = true;
+ //                   //GetComponent<SpriteRenderer>().enabled = true;
+ //                   GetComponent<SpriteRenderer>().sprite = DoorClosed;
+ //                   break;
+ //               }
+ //               else
+ //               {
+ //                   GetComponent<BoxCollider2D>().enabled = false;
+ //                   //GetComponent<SpriteRenderer>().enabled = false;
+ //                   GetComponent<SpriteRenderer>().sprite = DoorOpen;
+ //               }
+ //           }
+ //           else
+ //           {
+ //               if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
+ //               {
+ //                   GetComponent<BoxCollider2D>().enabled = false;
+ //                   //GetComponent<SpriteRenderer>().enabled = false;
+ //                   GetComponent<SpriteRenderer>().sprite = DoorOpen;
+ //                   break;
+ //               }
+ //               else
+ //               {
+ //                   GetComponent<BoxCollider2D>().enabled = true;
+ //                   //GetComponent<SpriteRenderer>().enabled = true;
+ //                   GetComponent<SpriteRenderer>().sprite = DoorClosed;
+ //               }
+ //           }
+ //       }
+	//}
 }
