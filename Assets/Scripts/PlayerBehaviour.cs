@@ -185,6 +185,18 @@ public class PlayerBehaviour : MonoBehaviour
             Kill();
             //StartCoroutine(HazardCollision());
         }
+        if (Col.gameObject.tag == "Collectible")
+        {
+            switch (Col.gameObject.GetComponent<CollectibleScript>().GetCollectibleType())
+            {
+                case Type.MEMORY:
+                    {
+                        MaxClones += 1;
+                        Destroy(Col.gameObject);
+                        break;
+                    }
+            }
+        }
     }
 
     public void Kill()
@@ -196,7 +208,7 @@ public class PlayerBehaviour : MonoBehaviour
         LeftMovementFlag = false;
         RightMovementFlag = false;
         AudioSource.PlayClipAtPoint(HazardDeathSound, transform.position);
-        GameObject gameManager = GameObject.Find("GameManager");
+        //GameObject gameManager = GameObject.Find("GameManager");
         RespawnTimer = 1.0f;
     }
 
