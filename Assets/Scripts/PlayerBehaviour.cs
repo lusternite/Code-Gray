@@ -183,6 +183,11 @@ public class PlayerBehaviour : MonoBehaviour
             GameObject ddoor = Col.gameObject;
             door = ddoor;
         }
+        if (Col.gameObject.tag == "Flag")
+        {
+            Debug.Log("NANIII");
+            StartPosition = transform.position;
+        }
         if (Col.gameObject.tag == "Hazard" && IsActive)
         {
             Kill();
