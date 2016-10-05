@@ -20,14 +20,14 @@ public class MemoryScript : MonoBehaviour
         }
 	}
 
-    void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.tag == "Hazard")
-        {
-            Debug.Log("memory hit by hazard");
-            health -= 200;
-        }
-    }
+    //void OnCollisionEnter2D(Collision2D col)
+    //{
+    //    if (col.gameObject.tag == "Hazard")
+    //    {
+    //        Debug.Log("memory hit by hazard");
+    //        health -= 200;
+    //    }
+    //}
 
     public void TakeDamage(int damage)
     {

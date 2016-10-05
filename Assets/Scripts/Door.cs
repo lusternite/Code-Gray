@@ -9,7 +9,7 @@ public class Door : MonoBehaviour
     public Sprite DoorOpen;
     Button ButtonTrigger;
     public bool Inverted;
-    public bool IsDoorOpen;
+    public bool XORgate;
 
 	// Use this for initialization
 	void Start ()
@@ -21,11 +21,28 @@ public class Door : MonoBehaviour
     void Update()
     {
         int numPressed = 0;
-        for (int i = 0; i < ButtonTriggerObjects.Length; ++i)
+        if (XORgate)
         {
-            if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
-                numPressed += 1;
+            for (int i = 0; i < ButtonTriggerObjects.Length; ++i)
+            {
+                if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
+                {
+                    numPressed += 1;
+                }           
+            }
         }
+        else
+        {
+            for (int i = 0; i < ButtonTriggerObjects.Length; ++i)
+            {
+                if (ButtonTriggerObjects[i].GetComponent<Button>().ButtonPressed)
+                {
+                    numPressed += 1;
+                    break;
+                }
+            }
+        }
+      
 
         if (numPressed % 2 == 1)
         {
