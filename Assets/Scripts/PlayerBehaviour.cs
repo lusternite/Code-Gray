@@ -301,6 +301,10 @@ public class PlayerBehaviour : MonoBehaviour
                 RightMovementFlag = false;
                 JumpFlag = false;
                 NextLevelTimer = 1.0f;
+                if (GameObject.Find("GameManager") != null && Application.loadedLevelName != "LevelSelect")
+                {
+                    GameObject.Find("GameManager").GetComponent<GameManager>().UpdateTimes(Time.timeSinceLevelLoad);
+                }
             }
             else
             {

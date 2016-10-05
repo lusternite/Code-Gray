@@ -65,7 +65,7 @@ public class LaserScript : MonoBehaviour
         {
             lineRenderer.enabled = true;
             lineRenderer.useWorldSpace = true;
-            float angle = (angleOfRotation / 2.0f) * Mathf.Sin(Time.time * rotationSpeed) + pointAngle;
+            float angle = (angleOfRotation / 2.0f) * Mathf.Sin(Time.timeSinceLevelLoad * rotationSpeed) + pointAngle;
             Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
             Vector2 direction = Vector2.up;
             direction = q * direction;

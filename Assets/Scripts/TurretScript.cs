@@ -72,10 +72,10 @@ public class TurretScript : MonoBehaviour {
 
         if (IsTurretOn)
         {
-            if (Time.time > _fTimeSince + _fTimer)
+            if (Time.timeSinceLevelLoad > _fTimeSince + _fTimer)
             {
                 Debug.Log("sfdhsgf");
-                _fTimeSince = Time.time;
+                _fTimeSince = Time.timeSinceLevelLoad;
                 Vector2 _frontVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad * transform.localEulerAngles.z), Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.z));
                 Vector3 _newVector = transform.position;
                 Debug.Log(_frontVector);

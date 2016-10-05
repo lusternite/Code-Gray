@@ -7,6 +7,7 @@ using System.Text;
 public class GameManager : MonoBehaviour
 {
     public GameObject PauseMenuCanvas;
+    public GameObject UICanvas;
     private static GameManager instance;
     string[] LevelBestTimes;
     public AudioSource BackGroundMusic;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
         BackGroundMusic.Play();
 
         DontDestroyOnLoad(this.gameObject);
+        GetCanvas().gameObject.SetActive(false);
     }
 
     void Awake()
@@ -38,16 +40,16 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    void ToggleSound()
+    public void ToggleSound()
     {
         soundOn = !soundOn;
         if (soundOn)
         {
-            BackGroundMusic.Pause();
+            BackGroundMusic.UnPause();
         }
         else
         {
-            BackGroundMusic.UnPause();
+            BackGroundMusic.Pause();
         }
     }
 
@@ -64,6 +66,8 @@ public class GameManager : MonoBehaviour
 
     void OnLevelWasLoaded()
     {
+        UICanvas.gameObject.SetActive(Application.loadedLevelName == "LevelSelect" ? false : true);
+
         // Sets the text to the current level number
         if (GetCanvas() != null)
         {
@@ -158,7 +162,7 @@ public class GameManager : MonoBehaviour
     void WriteToFile()
     {
         var sr = File.CreateText(Application.dataPath + "\\TextFiles\\BestTimes.txt");
-        for (int i = 0; i < Application.levelCount - 1; ++i)
+        for (int i = 0; i < 8; ++i)
         {
             sr.WriteLine(LevelBestTimes[i]);
         }
