@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Door : MonoBehaviour
 {
-
     public GameObject[] ButtonTriggerObjects;
     public Sprite DoorClosed;
     public Sprite DoorOpen;

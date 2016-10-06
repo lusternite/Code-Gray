@@ -201,6 +201,7 @@ public class PlayerBehaviour : MonoBehaviour
                     {
                         MaxClones += 1;
                         Destroy(Col.gameObject);
+                        GameObject.Find("Canvas").GetComponent<UIManager>().SetMemoriesText("Memories: " + MaxClones.ToString());
                         break;
                     }
             }
@@ -301,7 +302,7 @@ public class PlayerBehaviour : MonoBehaviour
                 RightMovementFlag = false;
                 JumpFlag = false;
                 NextLevelTimer = 1.0f;
-                if (GameObject.Find("GameManager") != null && Application.loadedLevelName != "LevelSelect")
+                if (GameObject.Find("GameManager") != null && Application.loadedLevelName != "LevelSelect" && Application.loadedLevelName != "MainMenu")
                 {
                     GameObject.Find("GameManager").GetComponent<GameManager>().UpdateTimes(Time.timeSinceLevelLoad);
                 }

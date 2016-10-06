@@ -13,9 +13,17 @@ public class GameManager : MonoBehaviour
     public AudioSource BackGroundMusic;
     bool isPaused = false;
     bool soundOn = true;
+    int highestlevel;
 
     void Start()
     {
+        StreamReader theReader = new StreamReader(Application.dataPath + "\\TextFiles\\LevelUnlocked.txt");
+        using (theReader)
+        {
+            highestlevel = int.Parse(theReader.ReadLine());
+            theReader.Close();
+        }
+
         LevelBestTimes = new string[8];
         ReadFromFile();
         if (!instance)
@@ -66,6 +74,14 @@ public class GameManager : MonoBehaviour
 
     void OnLevelWasLoaded()
     {
+        if (Application.loadedLevel > highestlevel)
+        {
+            highestlevel = Application.loadedLevel;
+            var sr = File.CreateText(Application.dataPath + "\\TextFiles\\LevelUnlocked.txt");
+            sr.WriteLine(highestlevel);
+            sr.Close();
+        }
+
         UICanvas.gameObject.SetActive(Application.loadedLevelName == "LevelSelect" ? false : true);
 
         // Sets the text to the current level number
@@ -112,7 +128,7 @@ public class GameManager : MonoBehaviour
 
     public void TogglePause()
     {
-        if (Application.loadedLevelName != "LevelSelect")
+        if (Application.loadedLevelName != "LevelSelect" && Application.loadedLevelName != "MainMenu")
         {
             isPaused = !isPaused;
             Time.timeScale = isPaused ? 0 : 1;
@@ -189,5 +205,10 @@ public class GameManager : MonoBehaviour
 
             theReader.Close();
         }
+    }
+
+    public int GetHighestLevel()
+    {
+        return highestlevel;
     }
 }
