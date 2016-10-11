@@ -15,6 +15,8 @@ public class LaserScript : MonoBehaviour
     public bool _isLaserOn;
     public bool XORgate;
 
+    public int _iDamage = 15;
+
     // Use this for initialization
     void Start ()
     {
@@ -76,7 +78,7 @@ public class LaserScript : MonoBehaviour
             // Check collisions
             if (hit.collider.gameObject.name == "Memory Upright Prefab(Clone)")
             {
-                hit.collider.gameObject.GetComponent<MemoryScript>().TakeDamage(15);
+                hit.collider.gameObject.GetComponent<MemoryScript>().TakeDamage(_iDamage);
                 Debug.Log("laser hit memory");
             }
             if (hit.collider.gameObject.name == "Player")

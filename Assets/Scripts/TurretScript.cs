@@ -8,7 +8,7 @@ public class TurretScript : MonoBehaviour {
     public float _fTimer = 2.5f;
     public float _fBulletVelocity;
     private Vector2 _fvBulletVelocity;
-    float _fTimeSince = 0.0f;
+    public float _fTimeSince = 0.0f;
 
     public GameObject Bullet;
 
@@ -72,10 +72,11 @@ public class TurretScript : MonoBehaviour {
 
         if (IsTurretOn)
         {
-            if (Time.timeSinceLevelLoad > _fTimeSince + _fTimer)
+            _fTimeSince += Time.deltaTime;
+            if (_fTimeSince > _fTimer)
             {
                 Debug.Log("sfdhsgf");
-                _fTimeSince = Time.timeSinceLevelLoad;
+                _fTimeSince = 0.0f;
                 Vector2 _frontVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad * transform.localEulerAngles.z), Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.z));
                 Vector3 _newVector = transform.position;
                 Debug.Log(_frontVector);
