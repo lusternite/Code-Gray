@@ -83,6 +83,13 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     Destroy(Clones[i].gameObject);
                     Clones.RemoveAt(i);
+
+                    //Reset all buttons
+                    Button[] Buttons = FindObjectsOfType<Button>();
+                    foreach (Button button in Buttons)
+                    {
+                        button.ButtonPressed = false;
+                    }
                 }
             }
 
