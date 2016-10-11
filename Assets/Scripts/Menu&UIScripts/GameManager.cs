@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         // Sets the text to the current level number
         if (GetCanvas() != null)
         {
-            GetCanvas().SetLevelText("Level: " + Application.loadedLevel.ToString());
+            GetCanvas().SetLevelText("Level: " + (Application.loadedLevel - 1).ToString());
             if (LevelBestTimes[Application.loadedLevel - 1] == "0.0")
             {
                 GetCanvas().SetBestTimeText("Best: --.--");
