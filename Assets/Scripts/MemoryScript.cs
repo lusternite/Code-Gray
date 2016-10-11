@@ -14,10 +14,7 @@ public class MemoryScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	    if (health <= 0)
-        {
-            Destroy(this.gameObject);
-        }
+
 	}
 
     //void OnCollisionEnter2D(Collision2D col)
@@ -32,5 +29,10 @@ public class MemoryScript : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 }

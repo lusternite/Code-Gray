@@ -76,6 +76,16 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (IsActive)
         {
+            for (int i = 0; i < Clones.Count; ++i)
+            {
+                Debug.Log(Clones[i].GetComponent<MemoryScript>().GetHealth());
+                if (Clones[i].GetComponent<MemoryScript>().GetHealth() <= 0)
+                {
+                    Destroy(Clones[i].gameObject);
+                    Clones.RemoveAt(i);
+                }
+            }
+
             if (CanMove) HandleKeyInputs();
             //HandleJumping();
             if (FacingRight)
