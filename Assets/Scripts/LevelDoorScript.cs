@@ -8,6 +8,7 @@ public class LevelDoorScript : MonoBehaviour
     public int levelToGoTo = 0;
     public bool isExitDoor = false;
     public bool isStartContinueDoor = false;
+    public bool isMainMenuDoor = false;
     public bool isLocked = false;
     public bool isOpen = false;
     public Sprite closedSprite;
@@ -39,6 +40,10 @@ public class LevelDoorScript : MonoBehaviour
             {
                 Application.LoadLevel(i);
             }
+        }
+        else if (isMainMenuDoor)
+        {
+            Application.LoadLevel(0);
         }
         else if (levelToGoTo == 0)
         {
