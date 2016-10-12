@@ -215,7 +215,7 @@ public class PlayerBehaviour : MonoBehaviour
                     {
                         MaxClones += 1;
                         Destroy(Col.gameObject);
-                        GameObject.Find("Canvas").GetComponent<UIManager>().SetMemoriesText("Memories: " + MaxClones.ToString());
+                        GameObject.Find("Canvas").GetComponent<UIManager>().SetMemories(MaxClones);
                         break;
                     }
             }
