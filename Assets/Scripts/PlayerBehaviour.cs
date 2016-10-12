@@ -193,9 +193,13 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (Col.gameObject.tag == "EndFlag")
         {
-            inDoor = true;
-            GameObject ddoor = Col.gameObject;
-            door = ddoor;
+            if (!Col.gameObject.GetComponent<LevelDoorScript>().GetIsLocked())
+            {
+                inDoor = true;
+                GameObject ddoor = Col.gameObject;
+                door = ddoor;
+                door.GetComponent<LevelDoorScript>().SetIsOpen(true);
+            }
         }
         if (Col.gameObject.tag == "Flag")
         {
@@ -242,6 +246,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (Col.gameObject.tag == "EndFlag")
         {
             inDoor = false;
+            door.GetComponent<LevelDoorScript>().SetIsOpen(false);
         }
     }
 
