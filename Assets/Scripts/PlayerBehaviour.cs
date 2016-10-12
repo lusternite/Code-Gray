@@ -30,6 +30,7 @@ public class PlayerBehaviour : MonoBehaviour
     float RespawnTimer = 0.0f;
     public float JumpFlagTimer = 0.0f;
     public float JumpingTimer;
+    float CloneTimer = 0.0f;
 
     //Prefabs
     public GameObject MemoryStanding;
@@ -251,7 +252,7 @@ public class PlayerBehaviour : MonoBehaviour
     void HandleKeyInputs()
     {
         //Left movement down
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        if (Input.GetAxis("Horizontal") < 0.0f)
         {
             if (!LeftMovementFlag)
             {
@@ -263,7 +264,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         //Right movement down
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        if (Input.GetAxis("Horizontal") > 0.0f)
         {
             if (!RightMovementFlag)
             {
@@ -272,10 +273,11 @@ public class PlayerBehaviour : MonoBehaviour
                 //FacingRight = true;
                 RightMovementFlag = true;
             }
+            Debug.Log("Right arrowkey down");
         }
 
         //Left movement up
-        if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
+        if (Input.GetAxis("Horizontal") == 0.0f || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
         {
             if (LeftMovementFlag)
             {
@@ -291,7 +293,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         //Right movement up
-        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
+        if (Input.GetAxis("Horizontal") == 0.0f || Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
         {
             if (RightMovementFlag)
             {
@@ -306,7 +308,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         //Jump
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        if (Input.GetAxis("Jump") > 0.0f /*|| Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)*/)
         {
             if (inDoor)
             {
@@ -326,7 +328,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
             else
             {
-                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 120.6f)
+                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) <= 2.6f)
                 {
                     if (CanJump)
                     {
@@ -340,7 +342,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         //Freeze Mechanic
-        if (Input.GetKeyDown(KeyCode.Space) && CanMove)
+        if (Input.GetAxis("Fire1") > 0.0f && CloneTimer < 0.0f /*Input.GetKeyDown(KeyCode.Space) && CanMove*/)
         {
             GameObject myRoadInstance =
              Instantiate(MemoryStanding,
@@ -360,6 +362,7 @@ public class PlayerBehaviour : MonoBehaviour
                 Clones.RemoveAt(0);
             }
 
+            CloneTimer = 1.0f;
             transform.position = StartPosition;
             CloneSound.Play();
 
@@ -405,6 +408,7 @@ public class PlayerBehaviour : MonoBehaviour
                 CanJump = false;
             }
         }
+        CloneTimer -= Time.deltaTime;
     }
 
     //Uses raycasting to detect walls on either side
