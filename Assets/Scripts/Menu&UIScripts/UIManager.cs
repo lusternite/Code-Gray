@@ -2,13 +2,12 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
 
     private static UIManager instance;
-    public Text timer;
     public Text level;
     public Text memories;
-    public Text besttime;
 
     void Start()
     {
@@ -46,11 +45,6 @@ public class UIManager : MonoBehaviour {
         return null;
     }
 
-    public void SetTimerText(string text)
-    {
-        timer.text = text;
-    }
-
     public void SetLevelText(string text)
     {
         level.text = text;
@@ -59,10 +53,5 @@ public class UIManager : MonoBehaviour {
     public void SetMemoriesText(string text)
     {
         memories.text = text;
-    }
-
-    public void SetBestTimeText(string text)
-    {
-        besttime.text = text;
     }
 }

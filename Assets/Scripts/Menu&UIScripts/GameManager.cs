@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     public GameObject PauseMenuCanvas;
     public GameObject UICanvas;
     private static GameManager instance;
-    string[] LevelBestTimes;
     public AudioSource BackGroundMusic;
     bool isPaused = false;
     bool soundOn = true;
@@ -24,8 +23,6 @@ public class GameManager : MonoBehaviour
             theReader.Close();
         }
 
-        LevelBestTimes = new string[8];
-        ReadFromFile();
         if (!instance)
         {
             instance = this;
@@ -88,14 +85,6 @@ public class GameManager : MonoBehaviour
         if (GetCanvas() != null)
         {
             GetCanvas().SetLevelText("Level: " + (Application.loadedLevel - 1).ToString());
-            if (LevelBestTimes[Application.loadedLevel - 1] == "0.0")
-            {
-                GetCanvas().SetBestTimeText("Best: --.--");
-            }
-            else
-            {
-                GetCanvas().SetBestTimeText("Best: " + float.Parse(LevelBestTimes[Application.loadedLevel - 1]).ToString("F2"));
-            }
         }
     }
 
@@ -160,51 +149,6 @@ public class GameManager : MonoBehaviour
     public void ExitApplication()
     {
         Application.Quit();
-    }
-
-    public void UpdateTimes(float time)
-    {
-        Debug.Log("During");
-        float prevBest = float.Parse(LevelBestTimes[Application.loadedLevel - 1]);
-        Debug.Log(prevBest);
-        Debug.Log(time);
-        if (time < prevBest || prevBest == 0.0)
-        {
-            LevelBestTimes[Application.loadedLevel - 1] = time.ToString("F2");
-        }
-        WriteToFile();
-    }
-
-    void WriteToFile()
-    {
-        var sr = File.CreateText(Application.dataPath + "\\TextFiles\\BestTimes.txt");
-        for (int i = 0; i < 8; ++i)
-        {
-            sr.WriteLine(LevelBestTimes[i]);
-        }
-        sr.Close();
-    }
-
-    void ReadFromFile()
-    {
-        string line;
-        StreamReader theReader = new StreamReader(Application.dataPath + "\\TextFiles\\BestTimes.txt");
-        using (theReader)
-        {
-            int i = 0;
-            do
-            {
-                line = theReader.ReadLine();
-                if (line != null)
-                {
-                    LevelBestTimes[i] = line;
-                }
-                i++;
-            }
-            while (line != null);
-
-            theReader.Close();
-        }
     }
 
     public int GetHighestLevel()

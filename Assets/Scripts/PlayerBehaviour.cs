@@ -105,11 +105,6 @@ public class PlayerBehaviour : MonoBehaviour
                 transform.rotation = new Quaternion(0.0f, 1.0f, 0.0f, 0.0f);
             }
             //Debug.Log("Velocity.y = " + GetComponent<Rigidbody2D>().velocity.y);
-            GameObject UICanvas = GameObject.Find("Canvas");
-            if (UICanvas != null)
-            {
-                if (LevelTimerOn) UICanvas.GetComponent<UIManager>().SetTimerText(Time.timeSinceLevelLoad.ToString("F2"));
-            }
         }
 
         HandleTimers();
@@ -321,10 +316,6 @@ public class PlayerBehaviour : MonoBehaviour
                 RightMovementFlag = false;
                 JumpFlag = false;
                 NextLevelTimer = 1.0f;
-                if (GameObject.Find("GameManager") != null && Application.loadedLevelName != "LevelSelect" && Application.loadedLevelName != "MainMenu")
-                {
-                    GameObject.Find("GameManager").GetComponent<GameManager>().UpdateTimes(Time.timeSinceLevelLoad);
-                }
             }
             else
             {
