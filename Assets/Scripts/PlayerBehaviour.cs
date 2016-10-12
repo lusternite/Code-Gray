@@ -54,12 +54,13 @@ public class PlayerBehaviour : MonoBehaviour
     void OnLevelWasLoaded(int level)
     {
         Hazards = GameObject.FindGameObjectsWithTag("Hazard");
-        GameObject UICanvas = GameObject.Find("Canvas");
-        if (UICanvas != null)
-        {
-            UICanvas.GetComponent<UIManager>().SetMemoriesText("Memories: " + MaxClones.ToString());
-        }
     }
+
+    public int GetMaxClones()
+    {
+        return MaxClones;
+    }
+
 
     // Use this for initialization
     void Start()

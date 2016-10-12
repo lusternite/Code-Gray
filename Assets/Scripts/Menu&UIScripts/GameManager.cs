@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
         BackGroundMusic.Play();
 
         DontDestroyOnLoad(this.gameObject);
-        GetCanvas().gameObject.SetActive(false);
+        //GetCanvas().gameObject.SetActive(false);
     }
 
     void Awake()
@@ -79,12 +79,19 @@ public class GameManager : MonoBehaviour
             sr.Close();
         }
 
-        UICanvas.gameObject.SetActive(Application.loadedLevelName == "LevelSelect" ? false : true);
-
-        // Sets the text to the current level number
-        if (GetCanvas() != null)
+        if (Application.loadedLevelName == "LevelSelect" || Application.loadedLevelName == "MainMenu")
         {
-            GetCanvas().SetLevelText("Level: " + (Application.loadedLevel - 1).ToString());
+            UICanvas.gameObject.SetActive(false);
+        }
+        else
+        {
+            UICanvas.gameObject.SetActive(true);
+        }
+        
+        GameObject player = GameObject.Find("Player");
+        if (player != null)
+        {
+            UICanvas.GetComponent<UIManager>().SetMemories(player.GetComponent<PlayerBehaviour>().GetMaxClones());
         }
     }
 

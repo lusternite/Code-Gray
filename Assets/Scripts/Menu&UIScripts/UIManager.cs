@@ -4,9 +4,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-
+    public Image memoryImage;
     private static UIManager instance;
-    public Text level;
     public Text memories;
 
     void Start()
@@ -45,13 +44,11 @@ public class UIManager : MonoBehaviour
         return null;
     }
 
-    public void SetLevelText(string text)
+    public void SetMemories(int memories)
     {
-        level.text = text;
-    }
-
-    public void SetMemoriesText(string text)
-    {
-        memories.text = text;
+        for (int i = 0; i < memories; ++i)
+        {
+            GameObject.Instantiate(memoryImage, new Vector3((i * 1), 0, 0), new Quaternion());
+        }
     }
 }
