@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public Image memoryImagePrefab;
+    public Sprite memoryUsedSprite;
     private static UIManager instance;
     private List<Image> memoryImages;
 
@@ -58,6 +59,14 @@ public class UIManager : MonoBehaviour
         {
             memoryImages.Add(Instantiate(memoryImagePrefab, new Vector3((i * 80) - (80/2 * memories), -70, 0), Quaternion.identity) as Image);//, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
             memoryImages[i].transform.SetParent(gameObject.transform, false);
+        }
+    }
+
+    public void SetActiveMemories(int _iActiveMemories)
+    {
+        for (int i = 0; i < _iActiveMemories; i++)
+        {
+            memoryImages[i].sprite = memoryUsedSprite;
         }
     }
 }
