@@ -66,7 +66,11 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < _iActiveMemories; i++)
         {
-            memoryImages[i].sprite = memoryUsedSprite;
+            memoryImages[i].sprite = memoryImagePrefab.sprite;
+        }
+        for (int j = memoryImages.Count; j > _iActiveMemories; j--)
+        {
+            memoryImages[j - 1].sprite = memoryUsedSprite;
         }
     }
 }
