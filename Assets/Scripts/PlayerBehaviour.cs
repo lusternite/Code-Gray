@@ -359,9 +359,12 @@ public class PlayerBehaviour : MonoBehaviour
                 Clones.RemoveAt(0);
             }
 
-            CloneTimer = 1.0f;
-            transform.position = StartPosition;
-            CloneSound.Play();
+            if (MaxClones > 0)
+            {
+                CloneTimer = 1.0f;
+                transform.position = StartPosition;
+                CloneSound.Play();
+            }
 
             //Reset all buttons
             Button[] Buttons = FindObjectsOfType<Button>();
