@@ -83,7 +83,7 @@ public class PlayerBehaviour : MonoBehaviour
                 Debug.Log(Clones[i].GetComponent<MemoryScript>().GetHealth());
                 if (Clones[i].GetComponent<MemoryScript>().GetHealth() <= 0)
                 {
-                    Destroy(Clones[i].gameObject);
+                    Clones[i].gameObject.GetComponent<MemoryScript>().Death();
                     Clones.RemoveAt(i);
 
                     //Reset all buttons
