@@ -9,7 +9,7 @@ public class LevelDoorScript : MonoBehaviour
     public bool isExitDoor = false;
     public bool isStartContinueDoor = false;
     public bool isMainMenuDoor = false;
-    public bool isLocked = false;
+    public bool isLocked;
     public bool isOpen = false;
     public Sprite closedSprite;
     public Sprite openSprite;
@@ -18,7 +18,7 @@ public class LevelDoorScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-	
+
 	}
 	
 	// Update is called once per frame
@@ -61,7 +61,7 @@ public class LevelDoorScript : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().sprite = lockedSprite;
         }
-        if (isOpen)
+        else if (isOpen)
         {
             GetComponent<SpriteRenderer>().sprite = openSprite;
         }
@@ -74,6 +74,11 @@ public class LevelDoorScript : MonoBehaviour
     public bool GetIsLocked()
     {
         return isLocked;
+    }
+
+    public void Unlock()
+    {
+        isLocked = false;
     }
 
     public void SetIsOpen(bool open)
