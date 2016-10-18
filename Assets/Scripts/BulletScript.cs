@@ -5,6 +5,8 @@ public class BulletScript : MonoBehaviour
 {
 
     public Vector3 _Velocity;
+    bool DeathFlag = false;
+    float DeathTimer = 0.3f;
 
     // Use this for initialization
     void Start()
@@ -15,7 +17,14 @@ public class BulletScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveBullet();
+        if (DeathFlag)
+        {
+            DeathTimer -= Time.deltaTime;
+            if (DeathTimer < 0.0f)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     void MoveBullet()
@@ -25,6 +34,10 @@ public class BulletScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D Col)
     {
-        Destroy(gameObject);
+        DeathFlag = true;
+        GetComponent<Rigidbody2D>().Sleep();
+        GetComponent<CircleCollider2D>().enabled = false;
+        GetComponent<Animator>().Play("BulletExplode");
+        //Destroy(gameObject);
     }
 }

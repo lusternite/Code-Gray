@@ -205,6 +205,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             Debug.Log("NANIII");
             StartPosition = transform.position;
+            Col.GetComponent<Animator>().Play("CheckpointActivate");
         }
         if (Col.gameObject.tag == "Hazard" && IsActive)
         {
