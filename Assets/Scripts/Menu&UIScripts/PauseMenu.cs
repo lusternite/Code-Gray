@@ -78,16 +78,6 @@ public class PauseMenu : MonoBehaviour
             }
             buttons[CurrentlySelectedOption].GetComponent<Image>().sprite = sprites[CurrentlySelectedOption * 2];
         }
-        //else if (Input.GetKeyUp(KeyCode.Space) || Input.GetAxis("Vertical") > 0.0f)
-        //{
-        //    buttons[CurrentlySelectedOption].GetComponent<Image>().sprite = sprites[CurrentlySelectedOption * 2 + 1];
-        //    CurrentlySelectedOption -= 1;
-        //    if (CurrentlySelectedOption < 0)
-        //    {
-        //        CurrentlySelectedOption = 2;
-        //    }
-        //    buttons[CurrentlySelectedOption].GetComponent<Image>().sprite = sprites[CurrentlySelectedOption * 2];
-        //}
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -105,7 +95,6 @@ public class PauseMenu : MonoBehaviour
                 manager.TogglePause();
                 manager.GoToMenu();
             }
-            Debug.Log("hi");
         }
     }
 
@@ -114,11 +103,11 @@ public class PauseMenu : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void SetState(bool state)
+    public void Reset()
     {
-        Debug.Log(state);
-        this.gameObject.SetActive(state);
+        CurrentlySelectedOption = 0;
+        ResumeButtonReference.GetComponent<Image>().sprite = resumeOn;
+        ToggleSoundButtonReference.GetComponent<Image>().sprite = toggleOff;
+        MenuButtonReference.GetComponent<Image>().sprite = menuOff;
     }
-
-
 }

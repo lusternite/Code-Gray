@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     bool isPaused = false;
     bool soundOn = true;
     int highestlevel;
+    GameObject[] levelSelectDoors;
 
     void Start()
     {
@@ -71,6 +72,27 @@ public class GameManager : MonoBehaviour
 
     void OnLevelWasLoaded()
     {
+        if (Application.loadedLevel == 1)
+        {
+            int levelsUnlocked;
+            StreamReader theReader = new StreamReader(Application.dataPath + "\\TextFiles\\LevelUnlocked.txt");
+            using (theReader)
+            {
+                levelsUnlocked = int.Parse(theReader.ReadLine());
+                theReader.Close();
+            }
+            
+            for (int i = 2; i <= levelsUnlocked; ++i)
+            {
+                GameObject door = GameObject.Find("Door " + i.ToString());
+                if (door == null)
+                {
+                    Debug.Log("nope");
+                }
+                door.GetComponent<LevelDoorScript>().Unlock();
+            }
+        }
+
         if (Application.loadedLevel > highestlevel)
         {
             highestlevel = Application.loadedLevel;
@@ -111,14 +133,7 @@ public class GameManager : MonoBehaviour
         {
             TogglePause();
         }
-        else if (Input.GetKeyDown(KeyCode.N))
-        {
-            GoToNextLevel();
-        }
-        else if (Input.GetKeyDown(KeyCode.M))
-        {
-            Application.LoadLevel("MenuScene");
-        }
+
         // Sets the timer to the time since level was loaded - rounded to 2 d.p
 	}
 
@@ -129,6 +144,7 @@ public class GameManager : MonoBehaviour
             isPaused = !isPaused;
             Time.timeScale = isPaused ? 0 : 1;
             PauseMenuCanvas.SetActive(isPaused);
+            PauseMenuCanvas.GetComponent<PauseMenu>().Reset();
         }
     }
 
