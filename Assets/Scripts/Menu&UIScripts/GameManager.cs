@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
     public GameObject UICanvas;
     private static GameManager instance;
     public AudioSource BackGroundMusic;
+    public AudioClip MenuMusic;
+    public AudioClip LevelMusicEasy;
+    public AudioClip LevelMusicMedium;
+    public AudioClip LevelMusicHard;
     bool isPaused = false;
     bool soundOn = true;
     int highestlevel;
@@ -81,7 +85,7 @@ public class GameManager : MonoBehaviour
                 levelsUnlocked = int.Parse(theReader.ReadLine());
                 theReader.Close();
             }
-            
+
             for (int i = 2; i <= levelsUnlocked; ++i)
             {
                 GameObject door = GameObject.Find("Door " + i.ToString());
@@ -109,11 +113,48 @@ public class GameManager : MonoBehaviour
         {
             UICanvas.gameObject.SetActive(true);
         }
-        
+
         GameObject player = GameObject.Find("Player");
         if (player != null)
         {
             UICanvas.GetComponent<UIManager>().SetMemories(player.GetComponent<PlayerBehaviour>().GetMaxClones());
+        }
+
+        //Changing music based on level
+        if (Application.loadedLevel < 2)
+        {
+            if (BackGroundMusic.clip != MenuMusic)
+            {
+                BackGroundMusic.Stop();
+                BackGroundMusic.clip = MenuMusic;
+                BackGroundMusic.Play();
+            }
+        }
+        else if (Application.loadedLevel < 9)
+        {
+            if (BackGroundMusic.clip != LevelMusicEasy)
+            {
+                BackGroundMusic.Stop();
+                BackGroundMusic.clip = LevelMusicEasy;
+                BackGroundMusic.Play();
+
+            }
+        }
+        else if (Application.loadedLevel < 16)
+        {
+            if (BackGroundMusic.clip != LevelMusicMedium)
+            {
+                BackGroundMusic.Stop();
+                BackGroundMusic.clip = LevelMusicMedium;
+                BackGroundMusic.Play();
+
+            }
+        }
+        else if (BackGroundMusic.clip != LevelMusicHard)
+        {
+            BackGroundMusic.Stop();
+            BackGroundMusic.clip = LevelMusicHard;
+            BackGroundMusic.Play();
         }
     }
 
@@ -122,8 +163,8 @@ public class GameManager : MonoBehaviour
         Application.LoadLevel(Application.loadedLevel);
     }
 
-	// Update is called once per frame
-	void Update()
+    // Update is called once per frame
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -135,7 +176,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Sets the timer to the time since level was loaded - rounded to 2 d.p
-	}
+    }
 
     public void TogglePause()
     {
@@ -156,7 +197,7 @@ public class GameManager : MonoBehaviour
             //Debug.Log(Application.levelCount);
             Application.LoadLevel(Application.loadedLevel + 1);
         }
-        else 
+        else
         {
             GoToMenu();
         }
