@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
 
         for (int i = 0; i < memories; ++i)
         {
-            memoryImages.Add(Instantiate(memoryImagePrefab, new Vector3((i * 80) - (80/2 * memories), -70, 0), Quaternion.identity) as Image);//, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+            memoryImages.Add(Instantiate(memoryImagePrefab, new Vector3((i * 80) - (80/2 * (memories-1)), -60, 0), Quaternion.identity) as Image);
             memoryImages[i].transform.SetParent(gameObject.transform, false);
         }
     }
