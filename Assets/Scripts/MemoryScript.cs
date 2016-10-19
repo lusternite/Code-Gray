@@ -4,18 +4,39 @@ using System.Collections;
 public class MemoryScript : MonoBehaviour
 {
     public int health = 1000;
+    public int InitHealth = 0;
     bool m_deathFlag = false;
     float m_deathTimer = 0.2f;
+    public Sprite[] Sprites;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
-	    
-	}
+        InitHealth = health;
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
+        for (int i = 0; i < 9; ++i)
+        {
+            if (health <= ((InitHealth / 9) * i))
+            {
+                GetComponent<SpriteRenderer>().sprite = Sprites[8 - i];
+                Vector2 newVec;
+                newVec.x = 2 - (0.07777777f * i);
+                newVec.y = 2 - (0.07777777f * i);
+                GetComponent<BoxCollider2D>().size = newVec;
+                break;
+            }
+        }
+
+        if (health != InitHealth)
+        {
+            GetComponent<Animator>().Stop();
+        }
+           
         if (m_deathFlag)
         {
             m_deathTimer -= Time.deltaTime;
