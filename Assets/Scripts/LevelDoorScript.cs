@@ -18,7 +18,10 @@ public class LevelDoorScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-
+        if (isLocked)
+        {
+            GetComponent<SpriteRenderer>().sprite = lockedSprite;
+        }
 	}
 	
 	// Update is called once per frame
@@ -57,18 +60,7 @@ public class LevelDoorScript : MonoBehaviour
 
     void Update()
     {
-        if (isLocked)
-        {
-            GetComponent<SpriteRenderer>().sprite = lockedSprite;
-        }
-        else if (isOpen)
-        {
-            GetComponent<SpriteRenderer>().sprite = openSprite;
-        }
-        else
-        {
-            GetComponent<SpriteRenderer>().sprite = closedSprite;
-        }
+
     }
 
     public bool GetIsLocked()
@@ -79,10 +71,19 @@ public class LevelDoorScript : MonoBehaviour
     public void Unlock()
     {
         isLocked = false;
+        GetComponent<SpriteRenderer>().sprite = closedSprite;
     }
 
     public void SetIsOpen(bool open)
     {
         isOpen = open;
+        if (isOpen)
+        {
+            GetComponent<SpriteRenderer>().sprite = openSprite;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().sprite = closedSprite;
+        }
     }
 }
