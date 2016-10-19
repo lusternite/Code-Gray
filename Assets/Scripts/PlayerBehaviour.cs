@@ -418,8 +418,8 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (GetComponent<Rigidbody2D>().velocity.y <= 0.0f)
         {
-            RaycastHit2D leftHit = Physics2D.Raycast(new Vector2(transform.position.x - 0.4f, transform.position.y), Vector2.left, 0.05f);
-            RaycastHit2D rightHit = Physics2D.Raycast(new Vector2(transform.position.x + 0.4f, transform.position.y), Vector2.right, 0.05f);
+            RaycastHit2D leftHit = Physics2D.Raycast(new Vector2(transform.position.x - 1.8f, transform.position.y), Vector2.left, 0.05f);
+            RaycastHit2D rightHit = Physics2D.Raycast(new Vector2(transform.position.x + 1.8f, transform.position.y), Vector2.right, 0.05f);
             if (leftHit)
             {
                 if (leftHit.transform.tag == "Object")
